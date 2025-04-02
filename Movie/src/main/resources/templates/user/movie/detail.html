@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <th:block th:replace="layoutUser::link-css"></th:block>
+    <link th:fragment="link-css" rel="stylesheet" th:href="@{/css/movies.css}">
+    <style>
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 10;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+            padding-top: 60px;
+        }
+
+        .modal-content {
+            background-color: black;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 400px;
+            text-align: center;
+            color: white;
+        }
+
+        .scrollable-list {
+            max-height: 150px; /* Chiều cao tối đa */
+            overflow-y: auto; /* Bật cuộn dọc */
+            margin: 10px 0;
+            text-align: left;
+            padding-right: 10px; /* Để không bị chồng với thanh cuộn */
+        }
+
+        .scrollable-list a {
+            display: block;
+            padding: 5px 10px;
+            color: white;
+            text-decoration: none;
+        }
+
+        .scrollable-list a:hover {
+            background-color: #333; /* Hiệu ứng hover */
+        }
+
+        /* Tùy chỉnh thanh cuộn */
+        .scrollable-list::-webkit-scrollbar {
+            width: 10px; /* Độ rộng của thanh cuộn */
+        }
+
+        .scrollable-list::-webkit-scrollbar-track {
+            background: #000; /* Nền của track (đường cuộn) */
+            border: 1px solid red; /* Viền đỏ */
+            border-radius: 10px;
+        }
+
+        .scrollable-list::-webkit-scrollbar-thumb {
+            background: white; /* Màu của thanh cuộn */
+            border-radius: 10px;
+        }
+
+        .scrollable-list::-webkit-scrollbar-thumb:hover {
+            background: #ddd; /* Hiệu ứng khi rê chuột */
+        }
+        .hass-scrollbar {
+            max-height: 400px; /* Chiều cao tối đa của nội dung */
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+        .hass-scrollbar::-webkit-scrollbar {
+            height: 8px;
+            width: 8px;
+        }
+
+        .hass-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+            box-shadow: 0 0 0 2px var(--citrine);
+            border-radius: 10px;
+        }
+        .hass-scrollbar::-webkit-scrollbar-thumb {
+            background: var(--gainsboro);
+            border-radius: 10px;
+            cursor: pointer;
+            box-shadow: inset 0 1px 0 var(--black),
+            inset 0 -1px 0 var(--black);
+
+        }
+    </style>
+</head>
+<body>
+<th:block th:replace="layoutUser::header"></th:block>
+
+<main class="content" >
+    <div class="container" >
+        <section>
+            <div class="breaking-bad">
+                <ul class="movie-description">
+                    <div class="movie-image ">
+                        <img th:src="${movie.imageUrl}" th:alt="${movie.name}+'poster'">
+                    </div>
+                    <div class="movie-content">
+                        <div class="movie-trailer">
+                            <h1 th:text="${movie.name}"></h1>
+                            <h3 th:text="${movie.nameanother}"></h3>
+                            <div class="movie-type">
+                                <div th:each="genr,iterStat : ${genreList}">
+                                    <div class="line"></div>
+                                    <a class="langua" th:href="@{/phim/theloai/{genreId}(genreId=${genr.genreId})}">
+                                        <p th:text="${localizedGenreName[iterStat.index]}"></p>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="imdb">
+                            <div class="d-flex align-items-center">
+                                <p class="me-1" th:text="${movie.episodes.size()}+'/'"></p>
+                                <p class="me-1" th:text="${movie.duration}+' '+#{ep}"></p>
+                                <p class="me-1" th:if="${movie.state}==true" th:text="' - '+#{completed}"></p>
+                                <p class="me-1" th:if="${movie.state}==false" th:text="' - '+#{showing}"></p>
+                            </div>
+                            <a th:href="@{/phim/quocgia/{countryId}(countryId=${movie.country.id})}">
+                                <p th:if="${movie.country != null && locale.getLanguage().equals('vi')}" th:text="${movie.country.name}"></p>
+                                <p th:if="${movie.country != null && locale.getLanguage().equals('en')}" th:text="${movie.country.nameanother}"></p>
+                            </a>
+                            <p>Studio: <span th:text="${movie.studio}" class="langua" onclick="searchByStudio(this)"></span></p>
+                            <p>Update: <span th:text="${movie.timeupdate}"></span></p>
+                            <div style="display: flex;">
+                                <p th:text="'Rate: '+ ${movie.average}"></p>
+                                <p style="margin-left: 20px" th:text="'View: '+ ${movie.view}"></p>
+                            </div>
+                        </div>
+                        <div class="trailer">
+                            <a sec:authorize="isAuthenticated()" class="langua" th:href="@{/phim/luuyeuthich/{id}(id=${movieId})}">
+                                <button  class="btn btn-primary" onclick="alert('Đã lưu vào danh sách yêu thích!')"><ion-icon name="heart-circle-outline"></ion-icon></button>
+                            </a>
+                            <a sec:authorize="!isAuthenticated()">
+                                <button  class="btn btn-primary" onclick="alert('Vui lòng đăng nhập !')"><ion-icon name="heart-circle-outline"></ion-icon></button>
+                            </a>
+                            <a>
+                                <button class="btn btn-primary" id="saveButton"><ion-icon name="list-circle-outline"></ion-icon></button>
+                            </a>
+                            <!--Lưu danh sách phát-->
+                            <div id="playlistModal" class="modal">
+                                <div class="modal-content">
+                                    <span class="close" style="margin-left: auto;z-index: 10;cursor: pointer">&times;</span>
+                                    <h3 style="color: #ffffff" th:text="#{savelist}+'...'"></h3>
+                                    <div class="scrollable-list">
+                                        <form style="margin-top: 10px"
+                                              th:each="danhsach : ${dexuats}"
+                                              th:action="@{/themdanhsach/{movieId}/{danhsachId}(movieId=${movieId}, danhsachId=${danhsach.id})}"
+                                              method="post">
+                                            <button type="submit" style="margin-bottom: 10px; cursor: pointer;color: white"
+                                                    th:text="#{list} + ': ' + ${danhsach.name}" onclick="alert('Đã lưu vào danh sách !')">
+                                            </button>
+                                        </form>
+                                    </div>
+                                    <button sec:authorize="isAuthenticated()" id="newPlaylistButton" class="btn btn-primary" th:text="'+ '+#{createlist}"></button>
+                                    <a href="/user/login">
+                                        <button sec:authorize="!isAuthenticated()"  class="btn btn-primary" style="margin-left: 30%">Đăng nhập</button>
+                                    </a>
+                                </div>
+                            </div>
+                            <!--Lưu danh sách phát-->
+                            <div id="playlistModalAdd" class="modal">
+                                <div class="modal-content">
+                                    <span class="close" style="margin-left: auto;z-index: 10;cursor: pointer">&times;</span>
+                                    <h3 style="color: #ffffff" th:text="#{createlist}"></h3>
+                                    <form th:action="@{/taikhoan/danhsachphat/add}" th:object="${dexuat}" style="margin-left: auto" method="post">
+                                        <div class="mb-3">
+                                            <div class="form-container" style="display: flex; align-items: center; gap: 20px; justify-content: center; padding: 10px; border: 1px solid #ccc; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+                                                <input th:placeholder="#{inputList}" class="form-control" type="text" th:field="*{name}" id="name" style="width: 250px; padding: 10px; border: 1px solid #ccc; border-radius: 8px; font-size: 16px; transition: all 0.3s ease;">
+                                                <div class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}" style="font-size: 12px; color: #e74c3c;"></div>
+                                                <input type="submit" th:value="#{create}" class="btn-submit" style="padding: 10px 20px; font-size: 16px; background-color: #ccc; color: white; border: none; border-radius: 8px; cursor: pointer;">
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <a th:if="${episodesLast != null}" class="langua" th:href="@{/phim/xem/{movieId}/{epId}(movieId=${episodesLast.movie.movieId},epId=${episodesLast.id})}">
+                                <button class="btn btn-primary" ><ion-icon name="play-circle-outline"></ion-icon></button>
+                            </a>
+                        </div>
+                    </div>
+                </ul>
+            </div>
+            <div class="movie-desc-2">
+                <h2 class="mt-4" th:text="#{description}"></h2>
+                <p th:text="${movie.description}"></p>
+            </div>
+        </section>
+        <section>
+            <div class="movie-desc-2" style="justify-content: center;align-items: center;">
+                <iframe th:src="${movie.trailerUrl}" controls style="width: 70vw; height: 35vw; margin-bottom: 5%;"></iframe>
+            </div>
+            <div class="row-detail container" style="margin-bottom: 5%">
+                <div class="playlist" style="display: block;">
+                    <div class="movie-list" style="display: block;"><p class="newsv" th:text="#{episode}"></p>
+                       <div sec:authorize="isAuthenticated()">
+                           <div th:if="${!movie.isPremium()}" class="ep-list">
+                               <div class="col-p11" th:each="ep :${episodes}">
+                                   <a class="langua" th:href="@{/phim/xem/{movieId}/{epId}(movieId=${ep.movie.movieId},epId=${ep.id})}">
+                                       <button class="btn btn-primary mb-2" style="height: 10px" th:title="${ep.description}" th:text="${ep.description}"></button>
+                                   </a>
+                               </div>
+                           </div>
+                           <div th:if="${movie.isPremium() && (currentUserG.premiumDuration != null && currentUserG.premiumDuration.isAfter(T(java.time.LocalDateTime).now()))}" class="ep-list">
+                               <div class="col-p11" th:each="ep :${episodes}">
+                                   <a class="langua" th:href="@{/phim/xem/{movieId}/{epId}(movieId=${ep.movie.movieId},epId=${ep.id})}">
+                                       <button class="btn btn-primary mb-2" style="height: 10px" th:title="${ep.description}" th:text="${ep.description}"></button>
+                                   </a>
+                               </div>
+                           </div>
+                           <div th:if="${movie.isPremium() && (currentUserG.premiumDuration == null || currentUserG.premiumDuration.isBefore(T(java.time.LocalDateTime).now()))}" class="ep-list">
+                               <div  class="col-p11" >
+                                   <a class="langua" th:href="@{/membership/{userId}(userId=${currentUserG.id})}">
+                                       <button class="btn btn-primary mb-2" style="height: 10px;width: 340px;"  th:text="'Mời nâng lên premium để xem'"></button>
+                                   </a>
+                               </div>
+                           </div>
+                       </div>
+                        <div sec:authorize="!isAuthenticated()">
+                            <div th:if="${!movie.isPremium()}" class="ep-list">
+                                <div class="col-p11" th:each="ep :${episodes}">
+                                    <a class="langua" th:href="@{/phim/xem/{movieId}/{epId}(movieId=${ep.movie.movieId},epId=${ep.id})}">
+                                        <button class="btn btn-primary mb-2" style="height: 10px" th:title="${ep.description}" th:text="${ep.description}"></button>
+                                    </a>
+                                </div>
+                            </div>
+                            <div th:if="${movie.isPremium()}" class="ep-list">
+                                <div  class="col-p11" >
+                                    <a class="langua" href="/login">
+                                        <button class="btn btn-primary mb-2" style="height: 10px;width: 445px;"  th:text="'Mời đăng nhập và nâng lên premium để xem'"></button>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="comment-section" >
+            <div class="comment-container " >
+                <h4 style="margin-left: 10px; margin-top: 5px" th:text="#{rate}"></h4>
+                <div class="hass-scrollbar">
+                    <div th:each="comment : ${comments}" class="comment-user row align-items-center " >
+                        <div class="col-11" >
+                            <div class="comment-user">
+                                <img th:if="${comment.user.imageUrl==null}" src="/css/anh-mau-den-1.jpg" alt="profile_image" />
+                                <img th:if="${comment.user.imageUrl!=null}" th:src="${comment.user.imageUrl}" alt="profile_image" />
+                            </div>
+                            <p class="text-primary bold" th:text="${comment.user.name}">UserName</p>
+                        </div>
+                        <div sec:authorize="isAuthenticated()"  class="col-1 text-end" >
+                            <form  class="d-inline" th:if="${comment.user.userName.contains(currentUser)}"
+                                   th:action="@{/comment/delete/{id}(id=${comment.id})}"
+                                   onclick="return confirm('Bạn có chắc chắn muốn xóa?')" method="post">
+                                <input type="hidden" name="episodeId" th:value="${comment.episode.id}"/>
+                                <input type="hidden" name="movieId" th:value="${comment.episode.movie.movieId}" />
+                                <button class="btn btn-danger btn-sm" style="height: 10px" type="submit"><ion-icon name="close-circle-outline"></ion-icon></button>
+                            </form>
+                        </div>
+
+                        <div class="comment-content">
+                            <p th:text="${comment.content}"></p>
+                            <div class="stars">
+                                <p th:if="${comment.rating == 1}">
+                                    <a class="fa fa-star" style="color: #FD4"></a>
+                                    <a class="fa fa-star" style="color: #444"></a>
+                                    <a class="fa fa-star" style="color: #444"></a>
+                                    <a class="fa fa-star" style="color: #444"></a>
+                                    <a class="fa fa-star" style="color: #444"></a>
+                                </p>
+                                <p th:if="${comment.rating == 2}">
+                                    <a class="fa fa-star" style="color: #FD4"></a>
+                                    <a class="fa fa-star" style="color: #FD4"></a>
+                                    <a class="fa fa-star" style="color: #444"></a>
+                                    <a class="fa fa-star" style="color: #444"></a>
+                                    <a class="fa fa-star" style="color: #444"></a>
+                                </p>
+                                <p th:if="${comment.rating == 3}">
+                                    <a class="fa fa-star" style="color: #FD4"></a>
+                                    <a class="fa fa-star" style="color: #FD4"></a>
+                                    <a class="fa fa-star" style="color: #FD4"></a>
+                                    <a class="fa fa-star" style="color: #444"></a>
+                                    <a class="fa fa-star" style="color: #444"></a>
+                                </p>
+                                <p th:if="${comment.rating == 4}">
+                                    <a class="fa fa-star" style="color: #FD4"></a>
+                                    <a class="fa fa-star" style="color: #FD4"></a>
+                                    <a class="fa fa-star" style="color: #FD4"></a>
+                                    <a class="fa fa-star" style="color: #FD4"></a>
+                                    <a class="fa fa-star" style="color: #444"></a>
+                                </p>
+                                <p th:if="${comment.rating == 5}">
+                                    <a class="fa fa-star" style="color: #FD4"></a>
+                                    <a class="fa fa-star" style="color: #FD4"></a>
+                                    <a class="fa fa-star" style="color: #FD4"></a>
+                                    <a class="fa fa-star" style="color: #FD4"></a>
+                                    <a class="fa fa-star" style="color: #FD4"></a>
+                                </p>
+                            </div>
+                            <span class="date" th:text="${#dates.format(comment.timeStamp, 'dd-MM-yyyy')}"></span>
+                            <hr>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </div>
+</main>
+<script>
+    // Get the modal
+    var modal = document.getElementById("playlistModal");
+    // Get the button that opens the modal
+    var btn = document.getElementById("saveButton");
+
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+
+    // When the user clicks the button, open the modal
+    btn.onclick = function() {
+        modal.style.display = "block";
+    }
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+
+    window.onclick = function(event) {
+        if (event.target === modal) {
+            modal.style.display = "none";
+        }
+    }
+    // Get the modals
+    var playlistModal = document.getElementById("playlistModal");
+    var playlistModalAdd = document.getElementById("playlistModalAdd");
+
+    // Get the buttons
+    var newPlaylistButton = document.getElementById("newPlaylistButton");
+
+    // Get the close buttons
+    var closeButtons = document.getElementsByClassName("close");
+
+    // Event: Open playlistModalAdd when clicking "New Playlist" button
+    newPlaylistButton.onclick = function() {
+        playlistModal.style.display = "none"; // Ẩn modal playlistModal
+        playlistModalAdd.style.display = "block"; // Hiển thị modal playlistModalAdd
+    };
+
+    // Event: Close the modals when clicking the "x" buttons
+    for (var i = 0; i < closeButtons.length; i++) {
+        closeButtons[i].onclick = function() {
+            playlistModal.style.display = "none";
+            playlistModalAdd.style.display = "none";
+        };
+    }
+
+    // Event: Close the modals when clicking outside of them
+    window.onclick = function(event) {
+        if (event.target === playlistModal) {
+            playlistModal.style.display = "none";
+        } else if (event.target === playlistModalAdd) {
+            playlistModalAdd.style.display = "none";
+        }
+    };
+    // tim kiem studio ra danh sach
+    function searchByStudio(element) {
+        let studioName = element.textContent.trim();
+
+        // Chuyển hướng đến URL tìm kiếm
+        window.location.href =  '/phim/timkiem?thongtin=' + encodeURIComponent(studioName);
+    }
+</script>
+<th:block th:replace="layoutUser::footer"></th:block>
+</body>
+</html>

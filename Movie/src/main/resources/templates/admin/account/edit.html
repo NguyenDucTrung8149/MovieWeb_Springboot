@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <meta charset="UTF-8">
+    <title>Sửa admin</title>
+    <th:block th:replace="layoutAdmin :: link-css"></th:block>
+</head>
+<body>
+<th:block th:replace="layoutAdmin :: header"></th:block>
+<div class="container-scroller">
+    <div class="container-fluid page-body-wrapper">
+        <nav class="sidebar sidebar-offcanvas" id="sidebar">
+            <ul class="nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/phim">
+                        <i class="ti-layout-list-post menu-icon"></i>
+                        <span class="menu-title">Quản lý phim</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/theloai">
+                        <i class="ti-view-list-alt menu-icon"></i>
+                        <span class="menu-title">Quản lý thể loại</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/quocgia">
+                        <i class="ti-star menu-icon"></i>
+                        <span class="menu-title">Quản lý quốc gia</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/account">
+                        <i class="ti-view-list-alt menu-icon"></i>
+                        <span class="menu-title">Quản lý tài khoản</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/comment">
+                        <i class="ti-star menu-icon"></i>
+                        <span class="menu-title">Quản lý đánh giá</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/message">
+                        <i class="ti-star menu-icon"></i>
+                        <span class="menu-title">Quản lý tin nhắn</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/paymentHistory">
+                        <i class="ti-star menu-icon"></i>
+                        <span class="menu-title">Quản lý lịch sử thanh toán</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <div class="main-panel">
+            <div class="content-wrapper">
+                <div class="row">
+                    <div class="col-lg-12 grid-margin stretch-card">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">Sửa admin</h4>
+                                <form th:action="@{/admin/account/edit/{id}(id=${user.id})}" th:object="${user}" method="post">
+                                    <input class="form-control" type="hidden" th:field="*{userName}" id="userName">
+                                    <div class="col-6 mb-3">
+                                        <label class="form-label" for="name">FullName:</label>
+                                        <input class="form-control" type="text" th:field="*{name}" id="name">
+                                        <div class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <label class="form-label" for="phone">Phone:</label>
+                                        <input class="form-control" type="number" th:field="*{phone}" id="phone">
+                                        <div class="text-danger" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></div>
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <label class="form-label" for="tuoi">Tuổi:</label>
+                                        <input class="form-control" type="number" th:field="*{tuoi}" id="tuoi">
+                                        <div class="text-danger" th:if="${#fields.hasErrors('tuoi')}" th:errors="*{tuoi}"></div>
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <label class="form-label" for="email">Email:</label>
+                                        <input class="form-control" type="text" th:field="*{email}" id="email">
+                                        <div class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+                                    </div>
+                                    <div>
+                                        <div class="col-6 mb-3">
+                                            <label class="form-label" for="oldPassword">Mật khẩu cũ:</label>
+                                            <input class="form-control" type="password" th:field="*{oldPassword}" id="oldPassword">
+                                            <div class="text-danger" th:if="${#fields.hasErrors('oldPassword')}" th:errors="*{oldPassword}"></div>
+                                        </div>
+                                        <div class="col-6 mb-3">
+                                            <label class="form-label" for="password">Mật khẩu mới:</label>
+                                            <input class="form-control" type="password" th:field="*{password}" id="password">
+                                        </div>
+                                        <div class="col-6 mb-3">
+                                            <label class="form-label" for="confirmPassword">Nhập lại mật khẩu mới:</label>
+                                            <input class="form-control" type="password" th:field="*{confirmPassword}" id="confirmPassword">
+                                            <div class="text-danger" th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}"></div>
+                                        </div>
+                                    </div>
+                                    <input type="submit" class="btn btn-primary" value="Cập nhật" style="margin-left: 15px;">
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<th:block th:replace="layoutAdmin :: footer"></th:block>
+</body>
+</html>

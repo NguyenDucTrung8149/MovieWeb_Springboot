@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <th:block th:replace="layoutAdmin :: link-css"></th:block>
+    <title>Thêm phim mới</title>
+</head>
+<body>
+<th:block th:replace="layoutAdmin :: header"></th:block>
+<div class="container-scroller">
+    <div class="container-fluid page-body-wrapper">
+        <nav class="sidebar sidebar-offcanvas" id="sidebar">
+            <ul class="nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/phim">
+                        <i class="ti-layout-list-post menu-icon"></i>
+                        <span class="menu-title">Quản lý phim</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/theloai">
+                        <i class="ti-view-list-alt menu-icon"></i>
+                        <span class="menu-title">Quản lý thể loại</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/quocgia">
+                        <i class="ti-star menu-icon"></i>
+                        <span class="menu-title">Quản lý quốc gia</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/account">
+                        <i class="ti-view-list-alt menu-icon"></i>
+                        <span class="menu-title">Quản lý tài khoản</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/comment">
+                        <i class="ti-star menu-icon"></i>
+                        <span class="menu-title">Quản lý đánh giá</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/message">
+                        <i class="ti-star menu-icon"></i>
+                        <span class="menu-title">Quản lý tin nhắn</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/paymentHistory">
+                        <i class="ti-star menu-icon"></i>
+                        <span class="menu-title">Quản lý lịch sử thanh toán</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <div class="main-panel">
+            <div class="content-wrapper">
+                <div class="row">
+                    <div class="col-lg-12 grid-margin stretch-card">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">Thêm tin nhắn</h4>
+                                <form th:action="@{/admin/message/add}" th:object="${message}" method="post">
+                                    <div class="col-6 mb-3">
+                                        <label class="form-label" for="info">Thông tin:</label>
+                                        <input class="form-control" type="text" th:field="*{info}" id="info">
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <label class="form-label" for="ngaydang">Ngày đăng:</label>
+                                        <input class="form-control" type="date" th:field="*{ngaydang}" id="ngaydang">
+                                        <div class="text-danger" th:if="${#fields.hasErrors('ngaydang')}" th:errors="*{ngaydang}"></div>
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <label class="form-label" for="type">Loại thông báo:</label>
+                                        <select class="form-control" id="type" th:field="*{type}">
+                                            <option th:value="0" th:selected="${message.type == false}">Cập nhật</option>
+                                            <option th:value="1" th:selected="${message.type == true}">Lỗi</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <label class="form-label" for="emergency">Độ khẩn cấp:</label>
+                                        <select class="form-control" id="emergency" th:field="*{emergency}">
+                                            <option th:value="0" th:selected="${message.emergency == false}">Không</option>
+                                            <option th:value="1" th:selected="${message.emergency == true}">Khẩn cấp</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <label class="form-label" for="movie">Phim:</label>
+                                        <select class="form-control" id="movie" th:field="*{movie.movieId}">
+                                            <option th:each="movie : ${movies}" th:value="${movie.movieId}" th:text="${movie.name}"></option>
+                                        </select>
+                                    </div>
+                                    <input type="submit" class="btn btn-primary" value="Lưu" style="margin-left: 15px;">
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<th:block th:replace="layoutAdmin :: footer"></th:block>
+</body>
+</html>

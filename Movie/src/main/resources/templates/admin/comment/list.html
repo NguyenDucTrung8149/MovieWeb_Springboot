@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <meta charset="UTF-8">
+    <title>Danh sách đánh giá</title>
+    <th:block th:replace="layoutAdmin :: link-css"></th:block>
+</head>
+<body>
+<th:block th:replace="layoutAdmin :: header"></th:block>
+<div class="container-scroller">
+    <div class="container-fluid page-body-wrapper">
+        <nav class="sidebar sidebar-offcanvas" id="sidebar">
+            <ul class="nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/phim">
+                        <i class="ti-layout-list-post menu-icon"></i>
+                        <span class="menu-title">Quản lý phim</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/theloai">
+                        <i class="ti-view-list-alt menu-icon"></i>
+                        <span class="menu-title">Quản lý thể loại</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/quocgia">
+                        <i class="ti-star menu-icon"></i>
+                        <span class="menu-title">Quản lý quốc gia</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/account">
+                        <i class="ti-view-list-alt menu-icon"></i>
+                        <span class="menu-title">Quản lý tài khoản</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/comment">
+                        <i class="ti-star menu-icon"></i>
+                        <span class="menu-title">Quản lý đánh giá</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/message">
+                        <i class="ti-star menu-icon"></i>
+                        <span class="menu-title">Quản lý tin nhắn</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/paymentHistory">
+                        <i class="ti-star menu-icon"></i>
+                        <span class="menu-title">Quản lý lịch sử thanh toán</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <div class="main-panel">
+            <div class="content-wrapper">
+                <form class="form-inline mb-4">
+                    <div class="input-group mr-2">
+                        <label>
+                            <input type="text" class="form-control custom-search" name="thongTin" placeholder="Nhập thông tin đánh giá">
+                        </label>
+                        <div class="input-group-append">
+                            <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+                        </div>
+                    </div>
+                    <div class="input-group mr-2">
+                        <label>
+                            <select class="form-control" name="movieId">
+                                <option value="" th:selected="${selectedMovie == null}">-- Chọn phim --</option>
+                                <option th:each="movie : ${movies}" th:value="${movie.movieId}" th:text="${movie.name}" th:selected="${selectedMovie == movie.movieId}"></option>
+                            </select>
+                        </label>
+                    </div>
+                    <div class="input-group-append">
+                        <button type="submit" class="btn btn-primary">Lọc</button>
+                    </div>
+                </form>
+                <div class="row">
+                    <div class="col-lg-12 grid-margin stretch-card">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">Danh sách đánh giá</h4>
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                        <tr>
+                                            <th>Id</th>
+                                            <th>Nội dung</th>
+                                            <th>Đánh giá</th>
+                                            <th>Thời gian</th>
+                                            <th>Tập</th>
+                                            <th>Người comment</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr th:each="comment : ${comments}">
+                                            <td th:text="${comment.id}"></td>
+                                            <td th:text="${comment.content}"></td>
+                                            <td th:text="${comment.rating}"></td>
+                                            <th th:text="${comment.timeStamp}"></th>
+                                            <th th:text="${comment.episode.description}"></th>
+                                            <td th:text="${comment.user.userName}"></td>
+                                            <td>
+                                                <form th:action="@{/comment/deleteUserComment/{id}(id=${comment.id})}" method="post" onsubmit="return confirm('Bạn có chắc chắn muốn xóa?')">
+                                                    <button type="submit" class="btn btn-link">Xóa</button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <nav aria-label="Page navigation">
+                    <ul class="pagination">
+                        <li th:class="${comments.first ? 'page-item disabled' : 'page-item'}">
+                            <a class="page-link" th:href="@{/comment(page=${comments.number - 1}, size=${comments.size}, episodeId=${selectedEpisode}, userId=${selectedUSer})}" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        <li th:each="i : ${#numbers.sequence(0, comments.totalPages - 1)}" th:class="${i == comments.number ? 'page-item active' : 'page-item'}">
+                            <a class="page-link" th:href="@{/comment(page=${i}, size=${comments.size}, episodeId=${selectedEpisode}, userId=${selectedUSer})}" th:text="${i + 1}"></a>
+                        </li>
+                        <li th:class="${comments.last ? 'page-item disabled' : 'page-item'}">
+                            <a class="page-link" th:href="@{/comment(page=${comments.number + 1}, size=${comments.size}, episodeId=${selectedEpisode}, userId=${selectedUSer})}" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+<th:block th:replace="layoutAdmin :: footer"></th:block>
+</body>
+</html>

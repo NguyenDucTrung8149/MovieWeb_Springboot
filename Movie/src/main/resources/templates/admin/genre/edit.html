@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <th:block th:replace="layoutAdmin :: link-css"></th:block>
+  <title>Sửa danh mục</title>
+</head>
+<body>
+<th:block th:replace="layoutAdmin :: header"></th:block>
+<div class="container-scroller">
+    <div class="container-fluid page-body-wrapper">
+        <nav class="sidebar sidebar-offcanvas" id="sidebar">
+            <ul class="nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/phim">
+                        <i class="ti-layout-list-post menu-icon"></i>
+                        <span class="menu-title">Quản lý phim</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/theloai">
+                        <i class="ti-view-list-alt menu-icon"></i>
+                        <span class="menu-title">Quản lý thể loại</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/quocgia">
+                        <i class="ti-star menu-icon"></i>
+                        <span class="menu-title">Quản lý quốc gia</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/account">
+                        <i class="ti-view-list-alt menu-icon"></i>
+                        <span class="menu-title">Quản lý tài khoản</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/comment">
+                        <i class="ti-star menu-icon"></i>
+                        <span class="menu-title">Quản lý đánh giá</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/message">
+                        <i class="ti-star menu-icon"></i>
+                        <span class="menu-title">Quản lý tin nhắn</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/paymentHistory">
+                        <i class="ti-star menu-icon"></i>
+                        <span class="menu-title">Quản lý lịch sử thanh toán</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <div class="main-panel">
+            <div class="content-wrapper">
+                <div class="row">
+                    <div class="col-lg-12 grid-margin stretch-card">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">Sửa danh mục</h4>
+                                <form th:action="@{/admin/theloai/edit/{id}(id=${genre.genreId})}" th:object="${genre}" method="post">
+                                    <div class="col-6 mb-3">
+                                        <label class="form-label" for="name">Tên danh mục:</label>
+                                        <input class="form-control" type="text" th:field="*{name}" id="name">
+                                        <div class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <label class="form-label" for="transName">Tên danh mục(Tiếng Anh):</label>
+                                        <input class="form-control" type="text" th:field="*{transName}" id="transName">
+                                        <div class="text-danger" th:if="${#fields.hasErrors('transName')}"
+                                             th:errors="*{transName}"></div>
+                                    </div>
+                                    <input type="submit" class="btn btn-primary" value="Cập nhật" style="margin-left: 15px;">
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<th:block th:replace="layoutAdmin :: footer"></th:block>
+</body>
+</html>

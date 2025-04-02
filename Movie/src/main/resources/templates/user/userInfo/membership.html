@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+
+<head>
+  <meta charset="UTF-8">
+  <th:block th:replace="layoutUser::link-css"></th:block>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Anime247</title>
+
+  <!-- 
+    - favicon
+  -->
+  <link rel="shortcut icon" href="./favicon.svg" type="image/svg+xml">
+
+  <!-- 
+    - custom css link
+  -->
+  <link rel="stylesheet" href="/css/home.css">
+  <link rel="stylesheet" href="/css/membership.css">
+  <!-- 
+    - google font link
+  -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+</head>
+<body>
+<th:block th:replace="layoutUser::header"></th:block>
+  <main>
+    <div class="pricing">
+      <div class="plan">
+        <h2>VIP Tháng</h2>
+        <div class="price">109.000/tháng</div>
+        <ul class="features">
+          <li><i class="fa fa-check-circle"></i> Xem phim không giới hạn</li>
+          <li><i class="fa fa-check-circle"></i> Lưu yêu thich</li>
+          <li><i class="fa fa-check-circle"></i> Thêm danh sách phát</li>
+        </ul>
+        <form th:action="@{/membership/subscribe}" method="post">
+          <input type="hidden" name="planDuration" value="1">
+          <button type="submit" class="btn-primarys">Đăng ký</button>
+        </form>
+      </div>
+      <div class="plan popular">
+        <span>Mua nhiều</span>
+        <h2>VIP Quý</h2>
+        <div class="price">249.000/3 tháng</div>
+        <ul class="features">
+          <li><i class="fa fa-check-circle"></i> Xem phim không giới hạn</li>
+          <li><i class="fa fa-check-circle"></i> Lưu yêu thich</li>
+          <li><i class="fa fa-check-circle"></i> Thêm danh sách phát</li>
+        </ul>
+        <form th:action="@{/membership/subscribe}" method="post">
+          <input type="hidden" name="planDuration" value="3">
+          <button type="submit" class="btn-primarys">Đăng ký</button>
+        </form>
+      </div>
+      <div class="plan">
+        <h2>VIP Năm</h2>
+        <div class="price">990.000/1 năm</div>
+        <ul class="features">
+          <li><i class="fa fa-check-circle"></i> Xem phim không giới hạn</li>
+          <li><i class="fa fa-check-circle"></i> Lưu yêu thich</li>
+          <li><i class="fa fa-check-circle"></i> Thêm danh sách phát</li>
+        </ul>
+        <form th:action="@{/membership/subscribe}" method="post">
+          <input type="hidden" name="planDuration" value="12">
+          <button type="submit" class="btn-primarys">Đăng ký</button>
+        </form>
+      </div>
+    </div>
+  </main>
+<th:block th:replace="layoutUser::footer"></th:block>
+</body>
+</html>

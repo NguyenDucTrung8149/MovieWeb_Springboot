@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <th:block th:replace="layoutAdmin :: link-css"></th:block>
+    <title>Thêm phim mới</title>
+</head>
+<body>
+<th:block th:replace="layoutAdmin :: header"></th:block>
+<div class="container-scroller">
+    <div class="container-fluid page-body-wrapper">
+        <nav class="sidebar sidebar-offcanvas" id="sidebar">
+            <ul class="nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/phim">
+                        <i class="ti-layout-list-post menu-icon"></i>
+                        <span class="menu-title">Quản lý phim</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/theloai">
+                        <i class="ti-view-list-alt menu-icon"></i>
+                        <span class="menu-title">Quản lý thể loại</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/quocgia">
+                        <i class="ti-star menu-icon"></i>
+                        <span class="menu-title">Quản lý quốc gia</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/account">
+                        <i class="ti-view-list-alt menu-icon"></i>
+                        <span class="menu-title">Quản lý tài khoản</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/comment">
+                        <i class="ti-star menu-icon"></i>
+                        <span class="menu-title">Quản lý đánh giá</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/message">
+                        <i class="ti-star menu-icon"></i>
+                        <span class="menu-title">Quản lý tin nhắn</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/paymentHistory">
+                        <i class="ti-star menu-icon"></i>
+                        <span class="menu-title">Quản lý lịch sử thanh toán</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <div class="main-panel">
+            <div class="content-wrapper">
+                <div class="row">
+                    <div class="col-lg-12 grid-margin stretch-card">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">Thêm phim</h4>
+                                <form th:action="@{/admin/phim/add}" th:object="${movie}" method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+                                    <div class="col-6 mb-3">
+                                        <label class="form-label" for="name">Tên phim:</label>
+                                        <input class="form-control" type="text" th:field="*{name}" id="name">
+                                        <div class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <label class="form-label" for="nameanother">Tên phim khác:</label>
+                                        <input class="form-control" type="text" th:field="*{nameanother}" id="nameanother">
+                                        <div class="text-danger" th:if="${#fields.hasErrors('nameanother')}" th:errors="*{nameanother}"></div>
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <label class="form-label" for="description">Mô tả:</label>
+                                        <input class="form-control" type="text" th:field="*{description}" id="description">
+                                        <div class="text-danger" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <label class="form-label" for="studio">Studio:</label>
+                                        <input class="form-control" type="text" th:field="*{studio}" id="studio">
+                                        <div class="text-danger" th:if="${#fields.hasErrors('studio')}" th:errors="*{studio}"></div>
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <label class="form-label" for="timeupdate">Thời gian cập nhật(Thời gian chiếu):</label>
+                                        <input class="form-control" type="date" th:field="*{timeupdate}" id="timeupdate">
+                                        <div class="text-danger" th:if="${#fields.hasErrors('timeupdate')}" th:errors="*{timeupdate}"></div>
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <label class="form-label" for="duration">Thời lượng(Tập):</label>
+                                        <input class="form-control" type="text" th:field="*{duration}" id="duration">
+                                        <div class="text-danger" th:if="${#fields.hasErrors('duration')}" th:errors="*{duration}"></div>
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <label class="form-label" for="ismovie">Loại phim:</label>
+                                        <select class="form-control" id="ismovie" th:field="*{ismovie}">
+                                            <option th:value="0" th:selected="${movie.ismovie == false}">Series</option>
+                                            <option th:value="1" th:selected="${movie.ismovie == true}">Movie</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <label class="form-label" for="state">Trạng thái:</label>
+                                        <select class="form-control" id="state" th:field="*{state}">
+                                            <option th:value="1" th:selected="${movie.state == true}">Hoàn thành</option>
+                                            <option th:value="0" th:selected="${movie.state == false}">Chưa hoàn thành</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <label class="form-label" for="premium">Premium:</label>
+                                        <select class="form-control" id="premium" th:field="*{premium}">
+                                            <option th:value="1" th:selected="${movie.premium == true}">Premium</option>
+                                            <option th:value="0" th:selected="${movie.premium == false}">NonPremium</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <label class="form-label" for="trailerUrl">Trailer phim:</label>
+                                        <input class="form-control" type="text" th:field="*{trailerUrl}" id="trailerUrl">
+                                        <div class="text-danger" th:if="${#fields.hasErrors('trailerUrl')}" th:errors="*{trailerUrl}"></div>
+                                    </div>
+
+                                    <div class="col-6 mb-3">
+                                        <label class="form-label" for="imageUrl">Ảnh:</label>
+                                        <input th:field="*{imageUrl}" class="form-control" type="file" accept="image/*" id="imageUrl" required>
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <label class="form-label" for="country">Quốc gia:</label>
+                                        <select class="form-control" id="country" th:field="*{country.id}">
+                                            <option value="">-- Chọn Quốc gia --</option>
+                                            <option th:each="country : ${countries}" th:value="${country.id}" th:text="${country.name}"></option>
+                                        </select>
+                                    </div>
+                                    <input type="submit" class="btn btn-primary" value="Lưu" style="margin-left: 15px;">
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<th:block th:replace="layoutAdmin :: footer"></th:block>
+</body>
+</html>

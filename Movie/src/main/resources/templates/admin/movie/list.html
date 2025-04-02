@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <meta charset="UTF-8">
+    <title>Danh sách phim</title>
+    <th:block th:replace="layoutAdmin :: link-css"></th:block>
+</head>
+<body>
+<th:block th:replace="layoutAdmin :: header"></th:block>
+<div class="container-scroller">
+    <div class="container-fluid page-body-wrapper">
+        <nav class="sidebar sidebar-offcanvas" id="sidebar">
+            <ul class="nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/phim">
+                        <i class="ti-layout-list-post menu-icon"></i>
+                        <span class="menu-title">Quản lý phim</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/theloai">
+                        <i class="ti-view-list-alt menu-icon"></i>
+                        <span class="menu-title">Quản lý thể loại</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/quocgia">
+                        <i class="ti-star menu-icon"></i>
+                        <span class="menu-title">Quản lý quốc gia</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/account">
+                        <i class="ti-view-list-alt menu-icon"></i>
+                        <span class="menu-title">Quản lý tài khoản</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/comment">
+                        <i class="ti-star menu-icon"></i>
+                        <span class="menu-title">Quản lý đánh giá</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/message">
+                        <i class="ti-star menu-icon"></i>
+                        <span class="menu-title">Quản lý tin nhắn</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/paymentHistory">
+                        <i class="ti-star menu-icon"></i>
+                        <span class="menu-title">Quản lý lịch sử thanh toán</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <div class="main-panel">
+            <div class="content-wrapper">
+                <form class="form-inline mb-4">
+                    <div class="input-group mr-2">
+                        <label>
+                            <input type="text" class="form-control custom-search" name="thongTin" placeholder="Nhập thông tin phim">
+                        </label>
+                        <div class="input-group-append">
+                            <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+                        </div>
+                    </div>
+                    <div class="input-group mr-2">
+                        <label>
+                            <select class="form-control" name="genreId">
+                                <option value="" th:selected="${selectedGenre == null}">-- Chọn thể loại --</option>
+                                <option th:each="genre : ${genres}" th:value="${genre.genreId}" th:text="${genre.name}" th:selected="${selectedGenre == genre.genreId}"></option>
+                            </select>
+                        </label>
+                    </div>
+                    <div class="input-group mr-2">
+                        <label>
+                            <select class="form-control" name="countryId">
+                                <option value="" th:selected="${selectedCountry == null}">-- Chọn quốc gia --</option>
+                                <option th:each="country : ${countries}" th:value="${country.id}" th:text="${country.name}" th:selected="${selectedCountry == country.id}"></option>
+                            </select>
+                        </label>
+                    </div>
+                    <div class="input-group mr-2">
+                        <label>
+                            <select class="form-control" name="state">
+                                <option th:value="null" th:selected="${state == null}">-- Chọn trạng thái phim --</option>
+                                <option th:value="true" th:selected="${state == true}">Hoàn thành</option>
+                                <option th:value="false" th:selected="${state == false}">Chưa hoàn thành</option>
+                            </select>
+                        </label>
+                    </div>
+                    <div class="input-group-append">
+                        <button type="submit" class="btn btn-primary">Lọc</button>
+                    </div>
+                </form>
+                <div class="row">
+                    <div class="col-lg-12 grid-margin stretch-card">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">Danh sách phim</h4>
+                                <a th:href="@{/admin/phim/add}">Thêm mới</a>
+                                <p style="color: red;margin-top: 5px" th:text="'Phim chưa có thể loại: ('+${MoviesGenreNull.size()}+')'"></p>
+                                <div style="color: red; margin-top: 5px;">
+                                    Phim chưa có tập!
+                                    <div th:if="${#lists.size(MoviesEpNull) > 0}">
+                                        <div th:if="${#lists.size(MoviesEpNull) > 0}">
+                                            <div th:each="MovieEpNull, iterStat : ${MoviesEpNull}" style="display: inline;">
+                                                <a th:href="@{/admin/phim/tap/{id}(id=${MovieEpNull.movieId})}" th:text="${MovieEpNull.name} " style="margin-top: 5px;"></a>
+                                                <span th:if="${!iterStat.last}"> | </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                        <tr>
+                                            <th>Id</th>
+                                            <th>Tên phim</th>
+                                            <th>Premium</th>
+                                            <th>Ảnh</th>
+                                            <th>Loại</th>
+                                            <th>Thời gian chiếu</th>
+                                            <th>Studio</th>
+                                            <th>Quốc gia</th>
+                                            <th>Chức năng</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr th:each="movie : ${movies}">
+                                            <td th:text="${movie.movieId}"></td>
+                                            <td th:text="${movie.name}"></td>
+                                            <th th:if="${movie.premium}">Premium</th>
+                                            <th th:if="${!movie.premium}">NonPremium</th>
+                                            <td>
+                                                <div th:style="'width: 100px; height: 100px; background-image: url(' + ${movie.imageUrl} + '); background-size: cover;'"></div>
+                                            </td>
+                                            <th th:if="${movie.ismovie}">Movie</th>
+                                            <th th:if="${!movie.ismovie}">Series</th>
+                                            <td th:text="${movie.timeupdate}"></td>
+                                            <td th:text="${movie.studio}" style="white-space:  normal;  max-width: 400px;"></td>
+                                            <td th:if="${movie.country !=null}" th:text="${movie.country.name}"></td>
+                                            <td th:if="${movie.country ==null}" >Null</td>
+                                            <td>
+                                                <a th:href="@{/admin/phim/edit/{id}(id=${movie.movieId})}" target="_blank">Cập nhật</a> |
+                                                <a th:href="@{/admin/phim/tap/{id}(id=${movie.movieId})}" target="_blank">Danh sách tập</a> |
+                                                <a th:href="@{/admin/phim/delete/{id}(id=${movie.movieId})}" onclick="return confirm('Bạn có chắc chắn muốn xóa?')">Xóa</a>
+                                                <br>
+                                                <p th:if="${#lists.contains(MoviesGenreNull, movie)}" style="color: red"> Phim chưa có thể loại</p>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <nav aria-label="Page navigation">
+                    <ul class="pagination">
+                        <li th:class="${movies.first ? 'page-item disabled' : 'page-item'}">
+                            <a class="page-link" th:href="@{/admin/phim(page=${movies.number - 1}, size=${movies.size}, genreId=${selectedGenre}, countryId=${selectedCountry},state=${state},thongTin=${thongTin})}" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        <li th:each="i : ${#numbers.sequence(0, movies.totalPages - 1)}" th:class="${i == movies.number ? 'page-item active' : 'page-item'}">
+                            <a class="page-link" th:href="@{/admin/phim(page=${i}, size=${movies.size}, genreId=${selectedGenre}, countryId=${selectedCountry},state=${state},thongTin=${thongTin})}" th:text="${i + 1}"></a>
+                        </li>
+                        <li th:class="${movies.last ? 'page-item disabled' : 'page-item'}">
+                            <a class="page-link" th:href="@{/admin/phim(page=${movies.number + 1}, size=${movies.size}, genreId=${selectedGenre}, countryId=${selectedCountry},state=${state},thongTin=${thongTin})}" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+
+        </div>
+    </div>
+</div>
+<th:block th:replace="layoutAdmin :: footer"></th:block>
+</body>
+</html>

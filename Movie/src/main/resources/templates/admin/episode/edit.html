@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <th:block th:replace="layoutAdmin :: link-css"></th:block>
+    <link href="https://vjs.zencdn.net/7.15.4/video-js.css" rel="stylesheet" />
+    <title>Sửa quốc gia</title>
+</head>
+<body>
+<th:block th:replace="layoutAdmin :: header"></th:block>
+<div class="container-scroller">
+    <div class="container-fluid page-body-wrapper">
+        <nav class="sidebar sidebar-offcanvas" id="sidebar">
+            <ul class="nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/phim">
+                        <i class="ti-layout-list-post menu-icon"></i>
+                        <span class="menu-title">Quản lý phim</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/theloai">
+                        <i class="ti-view-list-alt menu-icon"></i>
+                        <span class="menu-title">Quản lý thể loại</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/quocgia">
+                        <i class="ti-star menu-icon"></i>
+                        <span class="menu-title">Quản lý quốc gia</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/account">
+                        <i class="ti-view-list-alt menu-icon"></i>
+                        <span class="menu-title">Quản lý tài khoản</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/comment">
+                        <i class="ti-star menu-icon"></i>
+                        <span class="menu-title">Quản lý đánh giá</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/message">
+                        <i class="ti-star menu-icon"></i>
+                        <span class="menu-title">Quản lý tin nhắn</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/paymentHistory">
+                        <i class="ti-star menu-icon"></i>
+                        <span class="menu-title">Quản lý lịch sử thanh toán</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <div class="main-panel">
+            <div class="content-wrapper">
+                <div class="row">
+                    <div class="col-lg-12 grid-margin stretch-card">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">Sửa tập phim</h4>
+                                <form th:action="@{/admin/phim/tap/edit/{id}(id=${episode.id})}" th:object="${episode}" method="post" enctype="multipart/form-data">
+                                    <div class="col-6 mb-3">
+                                        <label class="form-label" for="description">Mô tả tập phim</label>
+                                        <input class="form-control" type="text" th:field="*{description}" id="description">
+                                        <div class="text-danger" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <label class="form-label" for="timeupdate">Ngày đăng</label>
+                                        <input class="form-control" type="text" th:field="*{timeupdate}" id="timeupdate">
+                                        <div class="text-danger" th:if="${#fields.hasErrors('timeupdate')}" th:errors="*{timeupdate}"></div>
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <label class="form-label" for="state">Trạng thái:</label>
+                                        <select class="form-control" id="state" th:field="*{state}">
+                                            <option th:value="0" th:selected="${episode.state == false}">Chưa sẵn sàng</option>
+                                            <option th:value="1" th:selected="${episode.state == true}">Sẵn sàng</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <label class="form-label" for="file">Đường dẫn tập phim:</label>
+                                        <input class="form-control" type="file" name="file" id="file" accept="video/*">
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <video
+                                                id="my-video"
+                                                class="video-js"
+                                                controls
+                                                preload="auto"
+                                                width="620"
+                                                height="360"
+                                                data-setup="{}">
+                                            <source th:src="${episode.episodeLink}" type="application/x-mpegURL" />
+                                            <p class="vjs-no-js">
+                                                To view this video please enable JavaScript, and consider upgrading to a
+                                                web browser that
+                                                <a href="https://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
+                                            </p>
+                                        </video>
+                                    </div>
+                                    <div class="col-6 mb-3" hidden="hidden">
+                                        <label class="form-label" for="movie.movieId">Mã phim:</label>
+                                        <input class="form-control" type="text" th:field="*{movie.movieId}" id="movie.movieId">
+                                        <div class="text-danger" th:if="${#fields.hasErrors('movie.movieId')}" th:errors="*{movie.movieId}"></div>
+                                    </div>
+                                    <input type="submit" class="btn btn-primary" value="Cập nhật" style="margin-left: 15px;">
+                                    <a th:href="@{/admin/phim/tap/{id}(id=${episode.movie.movieId})}">Trở về danh sách tập</a>
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://vjs.zencdn.net/7.15.4/video.js"></script>
+<th:block th:replace="layoutAdmin :: footer"></th:block>
+</body>
+</html>

@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <th:block th:replace="layoutUser::link-css"></th:block>
+    <link rel="stylesheet" href="/css/nonti.css">
+    <style>
+        body.light-mode h4{
+            color: #1a1d20;
+        }
+        h4{
+            color: white;
+        }
+    </style>
+</head>
+<body>
+<th:block th:replace="layoutUser::header"></th:block>
+
+<main class="content">
+    <div class="container-noti">
+        <h2 th:text="#{schedule}"></h2>
+        <section th:if="${ThuHai.size()} > 0" class="notification">
+            <h4 th:if="${locale.getLanguage().equals('vi')}">Thứ Hai</h4>
+            <h4 th:if="${locale.getLanguage().equals('en')}">Monday</h4>
+            <div th:each="movie : ${ThuHai}" class="notification unread">
+                <div class="avatar">
+                    <a th:href="@{/phim/chitiet/{movieId}(movieId=${movie.movieId})}">
+                        <img th:src="${movie.imageUrl}" alt="" />
+                    </a>
+                </div>
+
+                <div class="info">
+                    <p class="unread__notif">
+                        <a th:href="@{/phim/chitiet/{movieId}(movieId=${movie.movieId})}" th:if="${locale.getLanguage().equals('vi')}" th:text="${movie.name}"></a>
+                        <a th:href="@{/phim/chitiet/{movieId}(movieId=${movie.movieId})}" th:if="${locale.getLanguage().equals('en')}" th:text="${movie.nameanother}"></a>
+                    </p>
+                    <h6 th:text="${movie.description}"></h6>
+                    <p th:if="${locale.getLanguage().equals('vi')}" th:text="'Ngày đăng: '+ ${movie.timeupdate}"></p>
+                    <p th:if="${locale.getLanguage().equals('en')}" th:text="'Time update: '+ ${movie.timeupdate}"></p>
+                </div>
+            </div>
+
+        </section>
+        <section  th:if="${ThuBa.size()} > 0" class="notification">
+            <h4 th:if="${locale.getLanguage().equals('vi')}">Thứ Ba</h4>
+            <h4 th:if="${locale.getLanguage().equals('en')}">Tuesday</h4>
+            <div th:each="movie : ${ThuBa}" class="notification unread">
+                <div class="avatar">
+                    <a th:href="@{/phim/chitiet/{movieId}(movieId=${movie.movieId})}">
+                        <img th:src="${movie.imageUrl}" alt="" />
+                    </a>
+                </div>
+
+                <div class="info">
+                    <p class="unread__notif">
+                        <a th:href="@{/phim/chitiet/{movieId}(movieId=${movie.movieId})}" th:if="${locale.getLanguage().equals('vi')}" th:text="${movie.name}"></a>
+                        <a th:href="@{/phim/chitiet/{movieId}(movieId=${movie.movieId})}" th:if="${locale.getLanguage().equals('en')}" th:text="${movie.nameanother}"></a>
+                    </p>
+                    <h6 th:text="${movie.description}"></h6>
+                    <p th:if="${locale.getLanguage().equals('vi')}" th:text="'Ngày đăng: '+ ${movie.timeupdate}"></p>
+                    <p th:if="${locale.getLanguage().equals('en')}" th:text="'Time update: '+ ${movie.timeupdate}"></p>
+                </div>
+            </div>
+
+        </section>
+        <section  th:if="${ThuTu.size()} > 0" class="notification">
+            <h4 th:if="${locale.getLanguage().equals('vi')}">Thứ Tư</h4>
+            <h4 th:if="${locale.getLanguage().equals('en')}">Wednesday</h4>
+            <div th:each="movie : ${ThuTu}" class="notification unread">
+                <div class="avatar">
+                    <a th:href="@{/phim/chitiet/{movieId}(movieId=${movie.movieId})}">
+                        <img th:src="${movie.imageUrl}" alt="" />
+                    </a>
+                </div>
+
+                <div class="info">
+                    <p class="unread__notif">
+                        <a th:href="@{/phim/chitiet/{movieId}(movieId=${movie.movieId})}" th:if="${locale.getLanguage().equals('vi')}" th:text="${movie.name}"></a>
+                        <a th:href="@{/phim/chitiet/{movieId}(movieId=${movie.movieId})}" th:if="${locale.getLanguage().equals('en')}" th:text="${movie.nameanother}"></a>
+                    </p>
+                    <h6 th:text="${movie.description}"></h6>
+                    <p th:if="${locale.getLanguage().equals('vi')}" th:text="'Ngày đăng: '+ ${movie.timeupdate}"></p>
+                    <p th:if="${locale.getLanguage().equals('en')}" th:text="'Time update: '+ ${movie.timeupdate}"></p></div>
+            </div>
+        </section>
+        <section  th:if="${ThuNam.size()} > 0" class="notification">
+            <h4 th:if="${locale.getLanguage().equals('vi')}">Thứ Năm</h4>
+            <h4 th:if="${locale.getLanguage().equals('en')}">Thursday</h4>
+            <div th:each="movie : ${ThuNam}" class="notification unread">
+                <div class="avatar">
+                    <a th:href="@{/phim/chitiet/{movieId}(movieId=${movie.movieId})}">
+                        <img th:src="${movie.imageUrl}" alt="" />
+                    </a>
+                </div>
+
+                <div class="info">
+                    <p class="unread__notif">
+                        <a th:href="@{/phim/chitiet/{movieId}(movieId=${movie.movieId})}" th:if="${locale.getLanguage().equals('vi')}" th:text="${movie.name}"></a>
+                        <a th:href="@{/phim/chitiet/{movieId}(movieId=${movie.movieId})}" th:if="${locale.getLanguage().equals('en')}" th:text="${movie.nameanother}"></a>
+                    </p>
+                    <h6 th:text="${movie.description}"></h6>
+                    <p th:if="${locale.getLanguage().equals('vi')}" th:text="'Ngày đăng: '+ ${movie.timeupdate}"></p>
+                    <p th:if="${locale.getLanguage().equals('en')}" th:text="'Time update: '+ ${movie.timeupdate}"></p></div>
+            </div>
+
+        </section>
+        <section  th:if="${ThuSau.size()} > 0" class="notification">
+            <h4 th:if="${locale.getLanguage().equals('vi')}">Thứ Sáu</h4>
+            <h4 th:if="${locale.getLanguage().equals('en')}">Friday</h4>
+            <div th:each="movie : ${ThuSau}" class="notification unread">
+                <div class="avatar">
+                    <a th:href="@{/phim/chitiet/{movieId}(movieId=${movie.movieId})}">
+                        <img th:src="${movie.imageUrl}" alt="" />
+                    </a>
+                </div>
+
+                <div class="info">
+                    <p class="unread__notif">
+                        <a th:href="@{/phim/chitiet/{movieId}(movieId=${movie.movieId})}" th:if="${locale.getLanguage().equals('vi')}" th:text="${movie.name}"></a>
+                        <a th:href="@{/phim/chitiet/{movieId}(movieId=${movie.movieId})}" th:if="${locale.getLanguage().equals('en')}" th:text="${movie.nameanother}"></a>
+                    </p>
+                    <h6 th:text="${movie.description}"></h6>
+                    <p th:if="${locale.getLanguage().equals('vi')}" th:text="'Ngày đăng: '+ ${movie.timeupdate}"></p>
+                    <p th:if="${locale.getLanguage().equals('en')}" th:text="'Time update: '+ ${movie.timeupdate}"></p></div>
+            </div>
+
+        </section>
+        <section  th:if="${ThuBay.size()} > 0" class="notification">
+            <h4 th:if="${locale.getLanguage().equals('vi')}">Thứ Bảy</h4>
+            <h4 th:if="${locale.getLanguage().equals('en')}">Saturday</h4>
+            <div th:each="movie : ${ThuBay}" class="notification unread">
+                <div class="avatar">
+                    <a th:href="@{/phim/chitiet/{movieId}(movieId=${movie.movieId})}">
+                        <img th:src="${movie.imageUrl}" alt="" />
+                    </a>
+                </div>
+
+                <div class="info">
+                    <p class="unread__notif">
+                        <a th:href="@{/phim/chitiet/{movieId}(movieId=${movie.movieId})}" th:if="${locale.getLanguage().equals('vi')}" th:text="${movie.name}"></a>
+                        <a th:href="@{/phim/chitiet/{movieId}(movieId=${movie.movieId})}" th:if="${locale.getLanguage().equals('en')}" th:text="${movie.nameanother}"></a>
+                    </p>
+                    <h6 th:text="${movie.description}"></h6>
+                    <p th:if="${locale.getLanguage().equals('vi')}" th:text="'Ngày đăng: '+ ${movie.timeupdate}"></p>
+                    <p th:if="${locale.getLanguage().equals('en')}" th:text="'Time update: '+ ${movie.timeupdate}"></p></div>
+            </div>
+
+        </section>
+        <section  th:if="${ChuNhat.size()} > 0" class="notification">
+            <h4 th:if="${locale.getLanguage().equals('vi')}">Chủ nhật</h4>
+            <h4 th:if="${locale.getLanguage().equals('en')}">Sunday</h4>
+            <div th:each="movie : ${ChuNhat}" class="notification unread">
+                <div class="avatar">
+                    <a th:href="@{/phim/chitiet/{movieId}(movieId=${movie.movieId})}">
+                        <img th:src="${movie.imageUrl}" alt="" />
+                    </a>
+                </div>
+
+                <div class="info">
+                    <p class="unread__notif">
+                        <a th:href="@{/phim/chitiet/{movieId}(movieId=${movie.movieId})}" th:if="${locale.getLanguage().equals('vi')}" th:text="${movie.name}"></a>
+                        <a th:href="@{/phim/chitiet/{movieId}(movieId=${movie.movieId})}" th:if="${locale.getLanguage().equals('en')}" th:text="${movie.nameanother}"></a>
+                    </p>
+                    <h6 th:text="${movie.description}"></h6>
+                    <p th:if="${locale.getLanguage().equals('vi')}" th:text="'Ngày đăng: '+ ${movie.timeupdate}"></p>
+                    <p th:if="${locale.getLanguage().equals('en')}" th:text="'Time update: '+ ${movie.timeupdate}"></p></div>
+            </div>
+
+        </section>
+    </div>
+</main>
+
+<th:block th:replace="layoutUser::footer"></th:block>
+</body>
+</html>

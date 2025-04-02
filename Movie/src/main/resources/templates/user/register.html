@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anime247</title>
+    <link rel="stylesheet" href="/css/register.css">
+
+
+    <!--
+      - google font link
+    -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+</head>
+
+<body>
+
+<main>
+
+    <div  class="box">
+        <form  th:action="@{/user/register}" th:object="${user}" class="box" method="post">
+            <h1>Đăng ký tài khoản</h1>
+            <input type="text"  th:field="*{userName}" id="userName" placeholder="Tên đăng nhập">
+            <span style="color: red;" th:if="${#fields.hasErrors('userName')}" th:errors="*{userName}"></span>
+            <input type="text"  th:field="*{name}" id="name" placeholder="Tên người dùng">
+            <span style="color: red;"  th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+            <input type="email" th:field="*{email}" id="email" placeholder="Nhập Email">
+            <span style="color: red;" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+            <input type="number"  th:field="*{phone}" id="phone" placeholder="Nhập số điện thoại">
+            <span style="color: red;" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></span>
+            <input type="number"  th:field="*{tuoi}" id="tuoi" placeholder="Nhập tuổi">
+            <span style="color: red;" th:if="${#fields.hasErrors('tuoi')}" th:errors="*{tuoi}"></span>
+            <input type="password"  th:field="*{password}" id="password" placeholder="Nhập mật khẩu">
+            <span style="color: red;" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
+            <button type="submit" class="btn-login">Đăng ký</button>
+        </form>
+    </div>
+</main>
+
+<!--
+  - ionicon link
+-->
+<script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <meta charset="UTF-8">
+    <title>Danh sách danh mục</title>
+    <th:block th:replace="layoutAdmin :: link-css"></th:block>
+</head>
+<body>
+<th:block th:replace="layoutAdmin :: header"></th:block>
+<div class="container-scroller">
+    <div class="container-fluid page-body-wrapper">
+        <nav class="sidebar sidebar-offcanvas" id="sidebar">
+            <ul class="nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/phim">
+                        <i class="ti-layout-list-post menu-icon"></i>
+                        <span class="menu-title">Quản lý phim</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/theloai">
+                        <i class="ti-view-list-alt menu-icon"></i>
+                        <span class="menu-title">Quản lý thể loại</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/quocgia">
+                        <i class="ti-star menu-icon"></i>
+                        <span class="menu-title">Quản lý quốc gia</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/account">
+                        <i class="ti-view-list-alt menu-icon"></i>
+                        <span class="menu-title">Quản lý tài khoản</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/comment">
+                        <i class="ti-star menu-icon"></i>
+                        <span class="menu-title">Quản lý đánh giá</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/message">
+                        <i class="ti-star menu-icon"></i>
+                        <span class="menu-title">Quản lý tin nhắn</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/paymentHistory">
+                        <i class="ti-star menu-icon"></i>
+                        <span class="menu-title">Quản lý lịch sử thanh toán</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <div class="main-panel">
+            <div class="content-wrapper">
+                <form class="form-inline mb-4">
+                    <div class="input-group mr-2">
+                        <label>
+                            <input type="text" class="form-control custom-search" name="tenTheLoai" placeholder="Nhập tên thể loại">
+                        </label>
+                        <div class="input-group-append">
+                            <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+                        </div>
+                    </div>
+                </form>
+                <div class="row">
+                    <div class="col-lg-12 grid-margin stretch-card">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">Danh sách danh mục</h4>
+                                <a th:href="@{/admin/theloai/add}">Thêm mới</a>
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Tên danh mục</th>
+                                            <th>Tên danh mục(Tiếng Anh)</th>
+                                            <th >Chức năng</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr th:each="genre : ${genres}">
+                                            <td th:text="${genre.genreId}"></td>
+                                            <td th:text="${genre.name}"></td>
+                                            <td th:text="${genre.transName}"></td>
+                                            <td>
+                                                <a th:href="@{/admin/theloai/edit/{id}(id=${genre.genreId})}">Cập Nhật</a> |
+                                                <a th:href="@{/admin/theloai/delete/{id}(id=${genre.genreId})}"
+                                                   onclick="return confirm('Bạn có chắc chắn muốn xóa?')">Xóa</a>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <nav aria-label="Page navigation">
+                    <ul class="pagination">
+                        <li th:class="${genres.first ? 'page-item disabled' : 'page-item'}">
+                            <a class="page-link" th:href="@{${'/admin/theloai?page=' + (genres.number - 1) + '&size=' + genres.size + '&tenTheLoai=' + (tenTheLoai != null ? tenTheLoai : '')}}" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        <li th:each="i : ${#numbers.sequence(0, genres.totalPages - 1)}" th:class="${i == genres.number ? 'page-item active' : 'page-item'}">
+                            <a class="page-link" th:href="@{${'/admin/theloai?page=' + i + '&size=' + genres.size + '&tenTheLoai=' + (tenTheLoai != null ? tenTheLoai : '')}}" th:text="${i + 1}"></a>
+                        </li>
+                        <li th:class="${genres.last ? 'page-item disabled' : 'page-item'}">
+                            <a class="page-link" th:href="@{${'/admin/theloai?page=' + (genres.number + 1) + '&size=' + genres.size + '&tenTheLoai=' + (tenTheLoai != null ? tenTheLoai : '')}}" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+<th:block th:replace="layoutAdmin :: footer"></th:block>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anime247</title>
+    <link rel="stylesheet" href="/css/forgot.css">
+
+
+    <!--
+      - google font link
+    -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+</head>
+
+<body>
+<main >
+    <div class="main-container" >
+        <img src="/css/anh-mau-den-1.jpg" alt="">
+        <form method="post" th:action="@{/user/forgotPassword/verifyOtp/{id}(id=${user.id})}" th:object="${user}" class="box"  >
+            <h1>OTP đã được gửi đến email của bạn.</h1>
+            <div class="form-for">
+                <input type="number" required class="form-control" id="otp" name="otp" max="999999" placeholder="Vui lòng nhập OTP" />
+                <span th:if="${ExpiredOtp}">
+                <span th:text="${ExpiredOtp}" class="alert alert-danger"></span>
+                <br>
+            </span>
+                <span th:if="${InvalidOtp}">
+                <span th:text="${InvalidOtp}" class="alert alert-danger"></span>
+                <br>
+            </span>
+                <button class="btn-login"><i class="fa fa-send-o"></i>Gửi</button>
+            </div>
+        </form>
+    </div>
+</main>
+
+<!--
+  - ionicon link
+-->
+<script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+</body>
+</html>

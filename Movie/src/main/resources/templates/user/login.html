@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anime247</title>
+    <link rel="stylesheet" href="/css/login.css">
+
+
+    <!--
+      - google font link
+    -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+</head>
+
+<body>
+
+<main>
+    <div  class="box">
+        <form method="post" th:action="@{/user/login}">
+            <h1>Đăng nhập tài khoản</h1>
+            <input type="text" required class="form-control form-control-lg" id="userName" name="username" placeholder="Tên người dùng">
+            <input type="password" required class="form-control form-control-lg" minlength="6" maxlength="20" id="password" name="password" placeholder="Mật khẩu">
+            <p th:if ="${param.error}" style="color: red;margin-bottom: 20px">
+                Tên đăng nhập và mật khẩu không hợp lệ
+            </p>
+            <p th:if ="${param.logout}" style="color: red;margin-bottom: 20px">
+                Bạn đã đăng xuất
+            </p>
+            <button  type="submit"  class="btn-login">Đăng nhập</button>
+            <div class="checkbox-w3" >
+                <input type="checkbox" name="remember-me" id="remember-me"/>
+                <span>Ghi nhớ đăng nhập</span>
+
+                <a href="/user/forgotPassword/verifyEmail">Quên mật khẩu</a>
+            </div>
+        </form>
+        <div>
+            <h4>Hoặc đăng nhập với</h4>
+
+            <div> <!--class="social"-->
+                <a href="/oauth2/authorization/google" >
+                    <button  class="btn1" style="margin-top:40px;text-align: center;"><i class="fa fa-google"></i>Google</button>
+                </a>
+            </div>
+            <div class="sos">
+                <span>Chưa có tài khoản?</span>
+                <a href="/user/register">Đăng ký</a>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!--
+  - ionicon link
+-->
+<script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+</body>
+
+</html>

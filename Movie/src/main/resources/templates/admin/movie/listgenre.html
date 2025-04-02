@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <meta charset="UTF-8">
+    <title>Danh sách phim</title>
+    <th:block th:replace="layoutAdmin :: link-css"></th:block>
+    <style>
+        .table-responsive {
+            overflow-x: auto; /* Tự động hiển thị thanh cuộn ngang khi cần */
+            max-height: 450px;
+            /*overflow-y: hidden;!* Đặt chiều cao tối đa của khung chứa *!*/
+        }
+
+        .table {
+            width: 100%; /* Chiều rộng của bảng */
+        }
+
+        .table th, .table td {
+            white-space: nowrap; /* Ngăn chặn từng dòng trong các ô */
+        }
+
+        .table img {
+            max-width: 100px; /* Đặt chiều rộng tối đa của hình ảnh */
+            height: auto; /* Duy trì tỷ lệ khung hình */
+        }
+
+        .table th, .table td {
+            vertical-align: middle; /* Căn giữa nội dung của các ô */
+        }
+    </style>
+</head>
+<body>
+<th:block th:replace="layoutAdmin :: header"></th:block>
+<div class="container-scroller">
+    <div class="container-fluid page-body-wrapper">
+        <nav class="sidebar sidebar-offcanvas" id="sidebar">
+            <ul class="nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/phim">
+                        <i class="ti-layout-list-post menu-icon"></i>
+                        <span class="menu-title">Quản lý phim</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/theloai">
+                        <i class="ti-view-list-alt menu-icon"></i>
+                        <span class="menu-title">Quản lý thể loại</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/quocgia">
+                        <i class="ti-star menu-icon"></i>
+                        <span class="menu-title">Quản lý quốc gia</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/account">
+                        <i class="ti-view-list-alt menu-icon"></i>
+                        <span class="menu-title">Quản lý tài khoản</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/comment">
+                        <i class="ti-star menu-icon"></i>
+                        <span class="menu-title">Quản lý đánh giá</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/message">
+                        <i class="ti-star menu-icon"></i>
+                        <span class="menu-title">Quản lý tin nhắn</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/paymentHistory">
+                        <i class="ti-star menu-icon"></i>
+                        <span class="menu-title">Quản lý lịch sử thanh toán</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <div class="main-panel">
+            <div class="content-wrapper">
+                <form class="form-inline mb-4">
+                    <div class="input-group mr-2">
+                        <label>
+                            <input type="text" class="form-control custom-search" name="thongTin" placeholder="Nhập thông tin phim">
+                        </label>
+                        <div class="input-group-append">
+                            <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+                        </div>
+                    </div>
+                </form>
+                <div class="row">
+                    <div class="col-lg-6 grid-margin stretch-card">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">Danh sách thể loại đã thêm</h4>
+                                <div class="table-responsive">
+                                    <table class="table table-hover overflow-auto">
+                                        <thead>
+                                        <tr>
+                                            <th>Id</th>
+                                            <th>Tên thể loại</th>
+                                            <th>Chức năng</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr th:each="genre : ${genresInMovie}">
+                                            <td th:text="${genre.genreId}"></td>
+                                            <td th:text="${genre.name}"></td>
+                                            <td>
+                                                <a th:href="@{/admin/phim/xoatheloai/{movieId}/{genreId}(movieId=${movieId}, genreId=${genre.genreId})}" onclick="return confirm('Bạn có chắc chắn muốn xóa?')">Xóa</a>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 grid-margin stretch-card">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">Danh sách thể loại chưa thêm</h4>
+                                <div class="table-responsive  ">
+                                    <table class="table table-hover overflow-auto">
+                                        <thead>
+                                        <tr>
+                                            <th>Id</th>
+                                            <th>Tên thể loại</th>
+                                            <th>Chức năng</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr th:each="genre : ${genresNotinMovie}">
+                                            <td th:text="${genre.genreId}"></td>
+                                            <td th:text="${genre.name}"></td>
+                                            <td>
+                                                <a th:href="@{/admin/phim/themtheloai/{movieId}/{genreId}(movieId=${movieId}, genreId=${genre.genreId})}">Thêm</a>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <a th:href="@{/admin/phim/edit/{id}(id=${movieId})}">Quay lại trang</a>
+            </div>
+        </div>
+    </div>
+</div>
+<th:block th:replace="layoutAdmin :: footer"></th:block>
+</body>
+</html>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <meta charset="UTF-8">
+    <title>Danh sách tập phim</title>
+    <th:block th:replace="layoutAdmin :: link-css"></th:block>
+    <style>
+        .table-responsive {
+            max-height: 400px; /* Chiều cao cố định của bảng, có thể điều chỉnh */
+            overflow-y: auto;  /* Bật thanh cuộn dọc */
+        }
+    </style>
+</head>
+<body>
+<th:block th:replace="layoutAdmin :: header"></th:block>
+<div class="container-scroller">
+    <div class="container-fluid page-body-wrapper">
+        <nav class="sidebar sidebar-offcanvas" id="sidebar">
+            <ul class="nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/phim">
+                        <i class="ti-layout-list-post menu-icon"></i>
+                        <span class="menu-title">Quản lý phim</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/theloai">
+                        <i class="ti-view-list-alt menu-icon"></i>
+                        <span class="menu-title">Quản lý thể loại</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/quocgia">
+                        <i class="ti-star menu-icon"></i>
+                        <span class="menu-title">Quản lý quốc gia</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/account">
+                        <i class="ti-view-list-alt menu-icon"></i>
+                        <span class="menu-title">Quản lý tài khoản</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/comment">
+                        <i class="ti-star menu-icon"></i>
+                        <span class="menu-title">Quản lý đánh giá</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/message">
+                        <i class="ti-star menu-icon"></i>
+                        <span class="menu-title">Quản lý tin nhắn</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/paymentHistory">
+                        <i class="ti-star menu-icon"></i>
+                        <span class="menu-title">Quản lý lịch sử thanh toán</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <div class="main-panel">
+            <div class="content-wrapper">
+                <form class="form-inline mb-4" th:action="@{/admin/phim/tap/{id}(id=${movieId})}" method="get">
+                    <div class="input-group mr-2">
+                        <label>
+                            <input type="text" class="form-control custom-search" name="thongTinTap" placeholder="Nhập thông tin tập">
+                        </label>
+                        <div class="input-group-append">
+                            <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+                        </div>
+                    </div>
+                </form>
+                <div class="row">
+                    <div class="col-lg-12 grid-margin stretch-card">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">Danh sách tập phim</h4>
+                                <a th:href="@{/admin/phim/tap/add/{id}(id=${movieId})}">Thêm mới</a>
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                        <tr>
+                                            <th>Ghi chú tập phim</th>
+                                            <th>Đường dẫn tập phim</th>
+                                            <th>Ngày đăng</th>
+                                            <th>Phim</th>
+                                            <th>Trạng thái</th>
+                                            <th >Chức năng</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr th:each="episode : ${episodes}">
+                                            <td th:text="${episode.description}"></td>
+<!--                                            <td class="text-truncate" style="max-width: 150px;" th:text="${episode.episodeLink}"></td>-->
+                                            <td class="text-truncate" style="max-width: 150px;"
+                                                th:text="${episode.episodeLink}"
+                                                th:attr="title=${episode.episodeLink}"
+                                                data-bs-toggle="tooltip"
+                                                data-bs-placement="top">
+                                            </td>
+                                            <td th:text="${episode.timeupdate}"></td>
+                                            <td th:text="${episode.movie.name}"></td>
+                                            <td th:if="${episode.state == true}">Sẵn sàng</td>
+                                            <td th:if="${episode.state == false}">Chưa sẵn sàng</td>
+                                            <td>
+                                                <a th:href="@{/admin/phim/tap/edit/{id}(id=${episode.id})}" >Cập Nhật</a> |
+                                                <a th:href="@{/admin/phim/tap/delete/{id}(id=${episode.id})}" onclick="return confirm('Bạn có chắc chắn muốn xóa?')">Xóa</a>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<th:block th:replace="layoutAdmin :: footer"></th:block>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        const tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+    });
+</script>
+</body>
+</html>

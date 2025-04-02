@@ -1,0 +1,124 @@
+.formbold-main{
+  margin-top: 200px;
+  font-family: 'Poppins', sans-serif;
+  font-style: inherit;
+}
+
+.container { max-width: 1320px; }
+.formbold-mb-5 {
+  margin-bottom: 20px;
+}
+.formbold-pt-3 {
+  padding-top: 12px;
+}
+.formbold-main-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px;
+}
+
+.formbold-form-wrapper {
+  max-width: 550px;
+  width: 100%;
+  background: #191c24;
+}
+.formbold-form-label {
+  display: block;
+  font-weight: 500;
+  font-size: 20px;
+  color: #f5f5f5;
+  margin-bottom: 15px;
+}
+body.light-mode .formbold-form-label {
+  color: #090909;
+}
+.formbold-form-label-2 {
+  font-weight: 600;
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+
+.formbold-form-input {
+  width: 100%;
+  padding: 12px 24px;
+  border-radius: 6px;
+  border: 1px solid #101417;
+  background: #111519;
+  font-weight: 500;
+  font-size: 16px;
+  color: #ffffff;
+  outline: none;
+  resize: none;
+}
+body.light-mode .formbold-form-input {
+  border: 1px solid #2e2e2e;
+  background: #2e2e2e;
+}
+.formbold-form-input:focus {
+  border-color: #e50914;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
+}
+
+.formbold--mx-3 {
+  margin-left: -12px;
+  margin-right: -12px;
+}
+.formbold-px-3 {
+  padding-left: 12px;
+  padding-right: 12px;
+}
+.flex {
+  display: flex;
+}
+.flex-wrap {
+  flex-wrap: wrap;
+}
+.w-full {
+  width: 100%;
+}
+@media (min-width: 540px) {
+  .sm\:w-half {
+    width: 50%;
+  }
+}
+.rounded-circle{
+  align-self: center;
+  align-items: center;
+}
+.img-pro img {
+  width: 250px;
+  height: 250px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-top: 20px;
+  margin-bottom: 50px;
+  border: 3px solid #b60000;
+}
+.btn-update{
+  color: var(--white);
+  font-size: var(--fs-11);
+  font-weight: var(--fw-700);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 16px 30px;
+  margin-bottom: 20px;
+  margin-top: 20px;
+  border: 2px solid var(--citrine);
+  border-radius: 50px;
+  transition: var(--transition-1);
+
+}
+
+.btn > ion-icon { font-size: 18px; }
+
+.btn-update { background: var(--rich-black-fogra-29); }
+
+.btn-update:is(:hover, :focus) {
+  background: var(--citrine);
+  border: 2px solid var(--rich-black-fogra-29);;
+  color: var(--xiketic);
+}

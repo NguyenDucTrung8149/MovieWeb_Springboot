@@ -1,0 +1,203 @@
+body {
+    background-color: #181b20; /* Màu nền tối */
+    color: #dededea9; /* Màu chữ sáng */
+    transition: background-color 0.3s, color 0.3s;
+}
+
+/* Light Mode */
+body.light-mode {
+    background-color: #dededea9; /* Màu nền sáng */
+    color: #181b20; /* Màu chữ tối */
+}
+
+/* Nút trong chế độ tối */
+.btn {
+    background-color:  #181b20; /* Màu nền nút sáng */
+    color: #ffffff; /* Màu chữ tối */
+
+}
+
+/* Nút trong chế độ sáng */
+body.light-mode .btn {
+    background-color: #e5e4e4; /* Màu nền nút tối */
+    color: #181b20; /* Màu chữ sáng */
+}
+
+/* Màu nền và màu chữ cho danh sách trong chế độ tối */
+.footer-list {
+    background-color: transparent; /* Đặt màu nền trong suốt */
+    color: #ffffffa0; /* Màu chữ sáng cho chế độ tối */
+}
+.navbar-list{
+    background-color: transparent;
+    color: #ffffff;
+}
+/* Màu nền và màu chữ cho danh sách trong chế độ sáng */
+
+body.light-mode .footer-list {
+    background-color: transparent; /* Đặt màu nền trong suốt */
+    color: #181b20; /* Màu chữ tối cho chế độ sáng */
+}
+body.light-mode .navbar-list{
+    background-color: transparent; /* Đặt màu nền trong suốt */
+    color: #181b20; /* Màu chữ tối cho chế độ sáng */
+}
+body.light-mode .navbar-link {
+    color: #181b20;
+    text-decoration: none; /* Bỏ gạch chân */
+}
+body.light-mode .footer-link {
+    color: #181b20;
+    text-decoration: none; /* Bỏ gạch chân */
+}
+
+/* Định dạng khi di chuột vào liên kết */
+.navbar-link:hover, .footer-link:hover {
+    text-decoration: underline; /* Gạch chân khi di chuột vào */
+}
+
+
+/* Quick link wrapper */
+.quicklink-list {
+    color: #ffffff; /* Màu chữ sáng */
+}
+
+
+/* Định dạng khi di chuột vào liên kết trong quicklink */
+.quicklink-link:hover {
+    text-decoration: underline; /* Gạch chân khi di chuột vào */
+}
+
+/* Nền và màu chữ cho lựa chọn ngôn ngữ trong chế độ tối */
+.lang-wrapper {
+    color: #ffffff; /* Màu chữ sáng */
+}
+
+.lang-wrapper select {
+    background-color: #181b20; /* Màu nền tối */
+    color: #ffffff; /* Màu chữ sáng */
+}
+
+/* Chế độ sáng cho dropdown, quick link và lựa chọn ngôn ngữ */
+body.light-mode .quicklink-list,
+body.light-mode .lang-wrapper {
+    background-color: #eaeaeadb; /* Màu nền sáng */
+    color: #181b20; /* Màu chữ tối */
+}
+
+body.light-mode .quicklink-link {
+    color: #181b20; /* Màu chữ tối cho liên kết */
+}
+
+body.light-mode .lang-wrapper select {
+    background-color: transparent; /* Màu nền sáng cho lựa chọn ngôn ngữ */
+    color: #181b20; /* Màu chữ tối cho lựa chọn ngôn ngữ */
+}
+.section-title {
+    color: #ffffff; /* Màu chữ trong chế độ tối */
+}
+
+/* Màu chữ cho tiêu đề phim */
+.card-title {
+    color: #ffffff; /* Màu chữ trong chế độ tối */
+}
+
+/* Màu chữ cho năm phát hành */
+time {
+    color: #cccccc; /* Màu chữ nhạt hơn trong chế độ tối */
+}
+
+
+data {
+    color: #ffffff; /* Màu chữ trong chế độ tối */
+}
+
+/* Màu chữ cho thẻ data trong chế độ sáng */
+body.light-mode data {
+    color: #181b20; /* Màu chữ cho thẻ data trong chế độ sáng */
+}
+/* Màu nền và màu chữ cho các phần tử trong chế độ sáng */
+body.light-mode .section-title {
+    color: #181b20; /* Màu chữ cho tiêu đề chính trong chế độ sáng */
+}
+
+body.light-mode .card-title {
+    color: #181b20; /* Màu chữ cho tiêu đề phim trong chế độ sáng */
+}
+
+body.light-mode time {
+    color: #666666; /* Màu chữ nhạt hơn cho năm phát hành trong chế độ sáng */
+}
+
+body.light-mode .badge {
+    background-color: #181b20; /* Màu nền nhãn trong chế độ sáng */
+    color: #ffffff; /* Màu chữ sáng cho nhãn trong chế độ sáng */
+}
+body.light-mode .badge-outline { border-color: #ee0e0ebf; }
+/* Menu dropdown */
+.dropdown-content a {
+    padding: 10px 20px;
+    text-decoration: none;
+    display: block;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+/* Màu nền và chữ cho chế độ sáng */
+body.light-mode .dropbtn {
+    color: #181b20; /* Chữ tối */
+}
+
+body.light-mode .dropdown-content a {
+    color: #181b20; /* Chữ tối */
+}
+
+/* Màu nền và chữ khi hover trong chế độ sáng */
+body.light-mode .dropdown-content a:hover {
+    background-color: #dddddd; /* Nền xám nhạt khi hover */
+    color: #181b20; /* Chữ tối */
+}
+
+
+/* Màu nền khi ở chế độ sáng */
+body.light-mode .header.active {
+    background: #eeeded; /* Màu nền sáng */
+}
+
+#language {
+    background-color: transparent;
+    color: #ffffff; /* Màu chữ đen */
+}
+body.light-mode #language{
+    background-color: transparent;
+    color: #181b20;
+}
+body.light-mode .has-scrollbar::-webkit-scrollbar-thumb{
+    background: #aaabad;
+}
+
+body.light-mode .pagination-nav a {
+    color: #181b20;
+}
+body.light-mode .pagination-nav a.active {
+    border-color: #007bff;
+}
+body.light-mode .input {
+    color: #181b20;
+    background-color: #aeaeae;
+}
+.input{
+    color: #ffffff;
+}
+body.light-mode .input::placeholder {
+    color: #606060;
+    opacity: 1;
+}
+body.light-mode .search-btn{
+    color: #181b20;
+}
+.bulb{
+    color: #ffffff;
+}
+body.light-mode .bulb{
+    color: #181b20;
+}

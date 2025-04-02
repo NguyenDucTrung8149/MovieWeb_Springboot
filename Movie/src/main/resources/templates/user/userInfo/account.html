@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <th:block th:replace="layoutUser::link-css"></th:block>
+    <link rel="stylesheet" th:href="@{/css/info.css}">
+</head>
+<body>
+<th:block th:replace="layoutUser::header"></th:block>
+
+<main >
+    <div class="container-fluid page-body-wrapper">
+        <!-- partial -->
+        <div class="main-panel">
+            <div class="content-wrapper">
+                <div class="main-body">
+                    <div class="detail gutters-sm">
+                        <div class="col-md-4">
+                            <div class="card">
+                                <div class="card-body">
+                                    <img th:if="${user.imageUrl == null}" src="/anh-mau-den-1.jpg" alt="Admin" class="rounded-circle" width="150" >
+                                    <img th:if="${user.imageUrl != null}" th:src="${user.imageUrl}" alt="Admin" class="rounded-circle" width="150">
+                                    <div class="mt-3">
+                                        <h3  style="color: #ffffff;" th:text="${user.userName}"></h3>
+                                        <p th:if="${user.premiumDuration != null && user.premiumDuration.isAfter(T(java.time.LocalDateTime).now())}"
+                                           class="text-secondary mb-1 text-danger bold">@PREMIUM</p>
+                                        <p th:if="${user.premiumDuration == null || user.premiumDuration.isBefore(T(java.time.LocalDateTime).now())}"
+                                           class="text-secondary mb-1 bold">@ACCOUNT</p>
+                                        <div class="button-container">
+                                            <a  href="/taikhoan/lichsu">
+                                                <button th:if="${locale.getLanguage().equals('vi')}" class="btn btn-primary">Lịch sử</button>
+                                                <button th:if="${locale.getLanguage().equals('en')}" class="btn btn-primary">History</button>
+                                            </a>
+                                            <a th:href="@{/taikhoan/edit}">
+                                                <button  th:if="${locale.getLanguage().equals('vi')}" class="btn btn-primary">Cập nhật</button>
+                                                <button  th:if="${locale.getLanguage().equals('en')}" class="btn btn-primary">Update</button>
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card" >
+                                <div class="card-body" style="color: #ffffff;">
+                                    <br>
+                                    <div class="detail">
+                                        <div class="col-sm-3">
+                                            <h5 th:if="${locale.getLanguage().equals('vi')}" class="mb-0">Tên</h5>
+                                            <h5 th:if="${locale.getLanguage().equals('en')}" class="mb-0">Name</h5>
+                                        </div>
+                                        <div class="col-sm-9 text-secondary" th:text="${user.name}">
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div th:if="${!user.email.isEmpty()}" class="detail">
+                                        <div class="col-sm-3">
+                                            <h5 class="mb-0">Email</h5>
+                                        </div>
+                                        <div class="col-sm-9 text-secondary" th:text="${user.email}">
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="detail">
+                                        <div class="col-sm-3">
+                                            <h5 th:if="${locale.getLanguage().equals('vi')}" class="mb-0">Sdt</h5>
+                                            <h5 th:if="${locale.getLanguage().equals('en')}" class="mb-0">Phone</h5>
+                                        </div>
+                                        <div class="col-sm-9 text-secondary" th:text="${user.phone}">
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="detail">
+                                        <div class="col-sm-3">
+                                            <h5 th:if="${locale.getLanguage().equals('vi')}" class="mb-0">Tuổi</h5>
+                                            <h5 th:if="${locale.getLanguage().equals('en')}" class="mb-0">Age</h5>
+                                        </div>
+                                        <div class="col-sm-9 text-secondary" th:text="${user.tuoi}">
+                                        </div>
+                                    </div>
+                                    <div th:if="${user.premiumDuration != null && user.premiumDuration.isAfter(T(java.time.LocalDateTime).now())}"
+                                         class="detail">
+                                        <div class="col-sm-3">
+                                            <h5 th:if="${locale.getLanguage().equals('vi')}" class="mb-0">Ngày hết hạn Premium</h5>
+                                            <h5 th:if="${locale.getLanguage().equals('en')}" class="mb-0">Premium expiration date</h5>
+                                        </div>
+                                        <div class="col-sm-9 text-secondary" th:text="${Premiumdate}">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="flex-wrapper" style="margin-left: 25px">
+
+                <div class="flex-nowrap">
+                    <h2 th:if="${locale.getLanguage().equals('vi')}">Danh sách phát</h2>
+                    <h2 th:if="${locale.getLanguage().equals('en')}">Playlist</h2>
+                    <form th:action="@{/taikhoan/danhsachphat/add}" th:object="${dexuat}" style="margin-left: auto" method="post">
+                        <div class="mb-3">
+                            <div class="form-container" style="display: flex; align-items: center; gap: 20px; justify-content: center; padding: 10px; border: 1px solid #ccc; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+                                <input th:placeholder="#{inputList}" class="form-control" type="text" th:field="*{name}" id="name" style="width: 250px; padding: 10px; border: 1px solid #ccc; border-radius: 8px; font-size: 16px; transition: all 0.3s ease;">
+                                <div class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}" style="font-size: 12px; color: #e74c3c;"></div>
+                                <input type="submit" th:value="#{create}" class="btn-submit" style="padding: 10px 20px; font-size: 16px; background-color: #ccc; color: white; border: none; border-radius: 8px; cursor: pointer;">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            <ul class="movies-list has-scrollbar " style="padding-bottom: 0">
+                <li th:each="danhsach,indexStat : ${dexuats}" >
+                    <div class="movies-card" >
+                            <figure class="cards-banner" style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);" >
+                                <img th:src="${listImageUrl[indexStat.index] != null ? listImageUrl[indexStat.index] : '/anh-mau-den-1.jpg'}"
+                                     title="image" alt="Movie Image"/>
+                                <a class="langua" th:href="@{/taikhoan/danhsachphat/phim/{danhsachId}(danhsachId=${danhsach.id})}" >
+                                    <button class="play-button" style="z-index: 1;">
+                                        <ion-icon class="play-icon" name="caret-forward-outline"></ion-icon>
+                                    </button>
+                                </a>
+                                <div class="title-wrapper d-flex justify-content-between ">
+                                    <a  class="langua"
+                                        th:href="@{/taikhoan/danhsachphat/phim/{danhsachId}(danhsachId=${danhsach.id})}"
+                                        style="z-index: 1;margin-left: 10px">
+                                        <h3 class="card-title"  th:text="${danhsach.name}"></h3>
+                                    </a>
+                                    <form th:action="@{/taikhoan/danhsachphat/xoa/{danhsachId}(danhsachId=${danhsach.id})}" method="post"
+                                       style="z-index: 1; ">
+                                        <input th:if="${locale.getLanguage().equals('vi')}" type="submit"  value="Xóa"
+                                               style="background-color: transparent;color: red;margin-right: 10px" onclick="return confirm('Bạn có chắc chắn muốn xóa?')">
+                                        <input th:if="${locale.getLanguage().equals('en')}" type="submit"  value="Delete"
+                                               style="background-color: transparent;color: red;margin-right: 10px" onclick="return confirm('Do you want delete?')">
+                                    </form>
+                                </div>
+                            </figure>
+
+
+                    </div>
+                </li>
+            </ul>
+            </div>
+            <br>
+            <br>
+            <h2 style="margin-left: 10px" th:if="${locale.getLanguage().equals('vi')}">Yêu thích</h2>
+            <h2 style="margin-left: 10px" th:if="${locale.getLanguage().equals('en')}">Favorite</h2>
+            <br>
+            <br>
+            <div class="detail">
+                <div class="col-12 grid-margin">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="table-responsive has-scrollbar">
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th>
+                                        </th>
+                                        <th th:if="${locale.getLanguage().equals('vi')}"> Tên phim </th>
+                                        <th th:if="${locale.getLanguage().equals('vi')}"> Tình trạng </th>
+                                        <th th:if="${locale.getLanguage().equals('vi')}"> Số tập </th>
+                                        <th th:if="${locale.getLanguage().equals('vi')}"> Ngày lưu </th>
+
+                                        <th th:if="${locale.getLanguage().equals('en')}"> Name </th>
+                                        <th th:if="${locale.getLanguage().equals('en')}"> State </th>
+                                        <th th:if="${locale.getLanguage().equals('en')}"> Episodes </th>
+                                        <th th:if="${locale.getLanguage().equals('en')}"> Saved date </th>
+                                        <th> </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody th:each="lovelists : ${lovelist}">
+                                    <tr>
+                                        <td>
+                                            <img class="imgs" th:src="${lovelists.movie.imageUrl}" alt="image" />
+                                        </td>
+                                        <td th:if="${locale.getLanguage().equals('vi')}" style="margin-top: 50px" th:text="${lovelists.movie.name}"> </td>
+                                        <td th:if="${locale.getLanguage().equals('en')}" style="margin-top: 50px" th:text="${lovelists.movie.nameanother}"> </td>
+                                        <td th:if="${lovelists.movie.state} == true" th:text="#{completed}"></td>
+                                        <td th:if="${lovelists.movie.state} == false" th:text="#{showing}"></td>
+
+                                        <td th:text="${lovelists.movie.episodes.size()}"></td>
+                                        <td th:text="${lovelists.ngayluu}">  </td>
+                                        <td >
+                                            <div style="display: flex">
+                                                <a th:href="@{/phim/chitiet/{movieId}(movieId=${lovelists.movie.movieId})}">
+                                                    <button style="height: 10px"  class="btn btn-primary"><ion-icon name="play-circle-outline"></ion-icon></button>
+                                                </a>
+                                                <form th:action="@{/taikhoan/yeuthich/xoa/{listId}(listId=${lovelists.id})}" method="post">
+                                                    <button style="height: 10px;margin-left: 10px" class="btn btn-primary" onclick="return confirm('Bạn có chắc chắn muốn xóa?')"><ion-icon name="trash-outline"></ion-icon></button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<th:block th:replace="layoutUser::footer"></th:block>
+</body>
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <th:block th:replace="layoutUser::link-css"></th:block>
+    <link rel="stylesheet" th:href="@{/css/info.css}">
+</head>
+<body>
+<th:block th:replace="layoutUser::header"></th:block>
+
+<main >
+    <div class="container-fluid page-body-wrapper">
+        <!-- partial -->
+        <div class="main-panel">
+            <h2 style="margin-left: 10px">Danh sách lịch sử</h2>
+            <a style="margin-left: 10px" href="/taikhoan" th:text="'Trờ về tài khoản'"></a>
+            <br>
+            <br>
+            <div class="detail">
+                <div class="col-12 grid-margin">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="table-responsive has-scrollbar">
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th>
+                                        </th>
+                                        <th> Tên phim </th>
+                                        <th> Tình trạng </th>
+                                        <th> Tập </th>
+                                        <th> Ngày lưu </th>
+                                        <th> </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody th:each="history : ${histories}">
+                                    <tr>
+                                        <td>
+                                            <img class="imgs" th:src="${history.episode.movie.imageUrl}" alt="image" />
+                                        </td>
+                                        <td style="margin-top: 50px" th:text="${history.episode.movie.name}"> </td>
+                                        <td th:if="${history.episode.movie.state} == true">Hoàn thành</td>
+                                        <td th:if="${history.episode.movie.state} == false">Chưa hoàn thành</td>
+                                        <td th:text="${history.episode.description}"></td>
+                                        <td th:text="${history.ngayxem}">  </td>
+                                        <td>
+                                            <div style="display: flex">
+                                                <a class="langua" th:href="@{/phim/xem/{movieId}/{epId}(movieId=${history.episode.movie.movieId},epId=${history.episode.id})}">
+                                                    <button style="height: 10px"  class="btn btn-primary"><ion-icon name="play-circle-outline"></ion-icon></button>
+                                                </a>
+                                                <form th:action="@{/taikhoan/lichsu/xoa/{listId}(listId=${history.id})}" method="post">
+                                                    <button style="height: 10px;margin-left: 10px" class="btn btn-primary"><ion-icon name="trash-outline" onclick="return confirm('Bạn có chắc chắn muốn xóa?')"></ion-icon></button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<th:block th:replace="layoutUser::footer"></th:block>
+</body>
+</html>

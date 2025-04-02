@@ -1,0 +1,98 @@
+.btn-primarys {
+    color: var(--white);
+    font-size: var(--fs-11);
+    font-weight: var(--fw-700);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    display: flex;
+    align-items: center;
+    justify-self: center;
+    gap: 5px;
+    padding: 16px 30px;
+    margin-top: 50px    ;
+    margin-bottom: 20px;
+    border: 2px solid var(--citrine);
+    border-radius: 50px;
+    transition: var(--transition-1);
+  }
+  
+  .btn > ion-icon { font-size: 18px; }
+  
+  .btn-primarys { background: var(--rich-black-fogra-29); }
+  
+  .btn-primarys:is(:hover, :focus) {
+    background: var(--citrine);
+    color: var(--xiketic);
+  }
+.pricing {
+    margin-top: 20%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+
+
+  .plan {
+    background-color: #040404;
+    padding: 2.5rem;
+    margin: 20px;
+    border-radius: 10px;
+    text-align: center;
+    transition: 0.3s;
+    cursor: pointer;
+    width: 20%;
+    border:  2px solid var(--citrine);
+
+    h2 {
+      font-size: 22px;
+      margin-bottom: 12px;
+    }
+
+    .price {
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+        color: #fff;
+        font-size: 30px;
+    }
+
+    ul.features {
+      list-style-type: none;
+      text-align: left;
+      color: #fff;
+      li {
+        margin: 8px;
+        color: #fff;
+        .fa{
+          margin-right: 4px;
+        } 
+        .fa-check-circle {
+          color: #6ab04c;
+        }
+        .fa-times-circle {
+          color: #fa0804;
+        }
+      }
+    }
+
+    &.popular {
+        border:  2px solid var(--citrine);
+        position: relative;
+        transform: scale(1.08);
+
+    span {
+        position: absolute;
+        top: -50px;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: var(--citrine);;
+        color: #fff;
+        padding: 4px 20px;
+        font-size: 25px;
+        border-radius: 10px;
+      }
+    }
+
+    &:hover {
+      box-shadow: 0 4px 8px rgba(242, 0, 0, 0.915);
+    }
+  }
+}

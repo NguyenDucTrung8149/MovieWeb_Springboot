@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <th:block th:replace="layoutUser::link-css"></th:block>
+</head>
+<body>
+<th:block th:replace="layoutUser::header"></th:block>
+
+<main class="content">
+    <div class="container">
+        <section class="slideshow">
+            <div class="slide-wrapper">
+                <div th:each="moviesRe:${moviesRecomment}">
+                    <div class="slide">
+                        <img th:src="${moviesRe.imageUrl}" th:alt="${moviesRe.nameanother}+'poster'">
+                        <div class="button-wrapper">
+                            <a  class="btn langua" th:href="@{/phim/chitiet/{movieId}(movieId=${moviesRe.movieId})}"  th:text="#{watchnow}"></a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+
+
+
+
+        <!--
+          - #UPCOMING
+        -->
+
+        <section class="upcoming">
+            <div class="container">
+
+                <div class="flex-wrapper">
+
+                    <div class="title-wrapper">
+                        <h2 class="h2 section-title" th:text="#{newest}"></h2>
+                    </div>
+                </div>
+
+                <ul class="movies-list has-scrollbar">
+
+                    <li th:each="moviesNew : ${moviesNewest}">
+                        <div class="movie-card" >
+
+                            <a class="langua" th:href="@{/phim/chitiet/{movieId}(movieId=${moviesNew.movieId})}">
+                                <figure class="card-banner">
+                                    <img th:src="${moviesNew.imageUrl}" th:alt="${moviesNew.nameanother} + 'poster'">
+                                </figure>
+                            </a>
+
+                            <div class="title-wrapper">
+                                <a class="langua" th:href="@{/phim/chitiet/{movieId}(movieId=${moviesNew.movieId})}">
+                                    <h3 th:if="${locale.getLanguage().equals('vi')}" class="card-title" th:text="${moviesNew.name}"></h3>
+                                    <h3 th:if="${locale.getLanguage().equals('en')}" class="card-title" th:text="${moviesNew.nameanother}"></h3>
+                                </a>
+
+                                <time th:text="${moviesNew.timeupdate}"></time>
+                            </div>
+
+                            <div class="card-meta">
+                                <div th:if="${moviesNew.premium ==  true}" class="badge badge-outline">Pre</div>
+                                <div th:if="${moviesNew.premium ==  false}" class="badge badge-outline">Free</div>
+                                <div class="duration">
+                                    <ion-icon name="time-outline"></ion-icon>
+
+                                    <time datetime="PT137M" th:text="${moviesNew.duration}+' '+#{ep}"></time>
+                                </div>
+
+                                <div class="rating">
+                                    <ion-icon name="star"></ion-icon>
+
+                                    <data th:text="${moviesNew.average}" value=""></data>
+                                </div>
+                            </div>
+
+                        </div>
+                    </li>
+
+                </ul>
+
+            </div>
+        </section>
+
+        <!--
+          - #TOP RATED
+        -->
+
+        <section class="top-rated">
+            <div class="container">
+
+                <h2 class="h2 section-title" th:text="#{best}"></h2>
+
+                <ul class="movies-list ">
+
+                    <li th:each="moviesAver : ${moviesAverage}">
+                        <div class="movie-card">
+
+                            <a class="langua" th:href="@{/phim/chitiet/{movieId}(movieId=${moviesAver.movieId})}">
+                                <figure class="card-banner">
+                                    <img th:src="${moviesAver.imageUrl}" th:alt="${moviesAver.nameanother} + 'poster'">
+                                </figure>
+                            </a>
+
+                            <div class="title-wrapper">
+                                <a class="langua" th:href="@{/phim/chitiet/{movieId}(movieId=${moviesAver.movieId})}">
+                                    <h3 th:if="${locale.getLanguage().equals('vi')}" class="card-title" th:text="${moviesAver.name}"></h3>
+                                    <h3 th:if="${locale.getLanguage().equals('en')}" class="card-title" th:text="${moviesAver.nameanother}"></h3>
+                                </a>
+
+                                <time th:text="${moviesAver.timeupdate}"></time>
+                            </div>
+
+                            <div class="card-meta">
+                                <div th:if="${moviesAver.premium ==  true}" class="badge badge-outline">Pre</div>
+                                <div th:if="${moviesAver.premium ==  false}" class="badge badge-outline">Free</div>
+
+                                <div class="duration">
+                                    <ion-icon name="time-outline"></ion-icon>
+
+                                    <time datetime="PT137M" th:text="${moviesAver.duration}+' '+#{ep}"></time>
+                                </div>
+
+                                <div class="rating">
+                                    <ion-icon name="star"></ion-icon>
+
+                                    <data th:text="${moviesAver.average}" value=""></data>
+                                </div>
+                            </div>
+
+                        </div>
+                    </li>
+
+                </ul>
+
+            </div>
+        </section>
+
+
+    </div>
+</main>
+
+<th:block th:replace="layoutUser::footer"></th:block>
+</body>
+</html>

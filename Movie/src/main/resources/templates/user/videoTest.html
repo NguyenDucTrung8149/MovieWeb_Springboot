@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video.js Example</title>
+    <link href="https://vjs.zencdn.net/7.15.4/video-js.css" rel="stylesheet" />
+    <link rel="stylesheet" th:href="@{/css/video.css}">
+</head>
+<body>
+<div class="video-container">
+    <video
+            id="my-video"
+            class="video-js"
+            controls
+            preload="auto"
+            width="640"
+            height="264"
+            th:poster="${ep.movie.imageUrl}"
+            data-setup="{}">
+        <source th:src="${ep.episodeLink}" type="video/mp4" />
+    </video>
+</div>
+<script src="https://vjs.zencdn.net/7.15.4/video.js"></script>
+<script th:src="@{/js/video.js}"></script>
+</body>
+</html>

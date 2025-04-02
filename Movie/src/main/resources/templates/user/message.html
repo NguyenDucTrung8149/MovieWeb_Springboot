@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <th:block th:replace="layoutUser::link-css"></th:block>
+    <link rel="stylesheet" href="/css/nonti.css">
+    <style>
+        .scrollbar {
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 8px;
+        }
+        .scrollbar::-webkit-scrollbar {
+            height: 8px;
+            width: 8px;
+        }
+
+        .scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+            box-shadow: 0 0 0 2px var(--citrine);
+            border-radius: 10px;
+        }
+        .scrollbar::-webkit-scrollbar-thumb {
+            background: var(--gainsboro);
+            border-radius: 10px;
+            cursor: pointer;
+            box-shadow: inset 0 1px 0 var(--black),
+            inset 0 -1px 0 var(--black);
+
+        }
+    </style>
+</head>
+<body>
+<th:block th:replace="layoutUser::header"></th:block>
+
+<main class="content">
+    <div  class="container-noti">
+        <h2  th:if="${messagesEmg.size() > 0}">Thông báo khẩn</h2>
+        <section th:if="${messagesEmg.size() > 0}" class="notification scrollbar">
+
+            <div th:each="message : ${messagesEmg}" class="notification unread ">
+                <div class="avatar">
+                    <a th:href="@{/phim/chitiet/{movieId}(movieId=${message.movie.movieId})}">
+                        <img th:src="${message.movie.imageUrl}" alt="" />
+                    </a>
+                </div>
+
+                <div class="info">
+                    <p class="unread__notif">
+                        <a th:href="@{/phim/chitiet/{movieId}(movieId=${message.movie.movieId})}" th:if="${locale.getLanguage().equals('vi')}" th:text="${message.movie.name}"></a>
+                        <a th:href="@{/phim/chitiet/{movieId}(movieId=${message.movie.movieId})}" th:if="${locale.getLanguage().equals('en')}" th:text="${message.movie.nameanother}"></a>
+                    </p>
+                    <h6 th:text="${message.info}"></h6>
+                    <p th:if="${locale.getLanguage().equals('vi')}" th:text="'Ngày đăng: '+${message.ngaydang}"></p>
+                    <p th:if="${locale.getLanguage().equals('en')}" th:text="'Time update: '+${message.ngaydang}"></p>
+                </div>
+            </div>
+
+        </section>
+        <h2  th:if="${messages.size() > 0}">Thông báo</h2>
+        <section th:if="${messages.size() > 0}" class="notification  scrollbar">
+
+            <div th:each="message : ${messages}" class="notification unread">
+                <div class="avatar">
+                    <a th:href="@{/phim/chitiet/{movieId}(movieId=${message.movie.movieId})}">
+                        <img th:src="${message.movie.imageUrl}" alt="" />
+                    </a>
+                </div>
+
+                <div class="info">
+                    <p class="unread__notif">
+                        <a th:href="@{/phim/chitiet/{movieId}(movieId=${message.movie.movieId})}" th:if="${locale.getLanguage().equals('vi')}" th:text="${message.movie.name}"></a>
+                        <a th:href="@{/phim/chitiet/{movieId}(movieId=${message.movie.movieId})}" th:if="${locale.getLanguage().equals('en')}" th:text="${message.movie.nameanother}"></a>
+                    </p>
+                    <h6 th:text="${message.info}"></h6>
+                    <p th:if="${locale.getLanguage().equals('vi')}" th:text="'Ngày đăng: '+${message.ngaydang}"></p>
+                    <p th:if="${locale.getLanguage().equals('en')}" th:text="'Time update: '+${message.ngaydang}"></p>
+                </div>
+            </div>
+
+        </section>
+    </div>
+</main>
+
+<th:block th:replace="layoutUser::footer"></th:block>
+</body>
+</html>

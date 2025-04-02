@@ -1,0 +1,84 @@
+.container-noti{
+    margin-top: 200px;
+    justify-self: center;
+    color: #fff;
+
+}
+.notification {
+    color: #fff;
+    padding: 3px 10px;
+    border-radius: 5px;
+    justify-content: center;
+    align-items: center;
+  }
+
+  section .unread{
+    display: flex;
+    padding: 1rem;
+    background-color: var( --gunmetal-1);
+    border-radius: 10px;
+    margin-bottom: 1rem;
+    align-items: center;
+  }
+  .notification .avatar {
+    margin-right: 1rem;
+  }
+  
+  .notification .avatar img {
+    width: 90px;
+  }
+  
+  .notification .info {
+    display: grid;
+    gap: 2px;
+  }
+  
+  .info p{
+    line-height: 0.5rem;
+    margin-top: 15px;
+  }
+  h6{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 960px;
+  }
+
+  h6:hover{
+    overflow: visible;
+    white-space: pre-line;
+    width: 960px;
+  }
+  .siu {
+    color: #fff;
+    font-size: 20px;
+    text-decoration: none;
+    font-weight: bold;
+    cursor: pointer;
+    margin-right: 20px;
+  }
+  a{
+    color: #fff;
+    line-height: 2.0;
+  }
+  a:hover {
+    color: var(--red);
+  }
+  
+  .info p:nth-child(1) {
+    color: var(--citrine);
+    font-size: 16px;
+    font-weight: bold;
+  }
+  
+  .info p:nth-child(1) a:nth-child(2) {
+    color: #fff;
+  }
+  
+  .flex {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  @media screen and (min-width: 481px) {
+  }

@@ -1,0 +1,84 @@
+.vjs-control-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.vjs-time-control {
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+}
+
+.vjs-remaining-time,
+.vjs-duration {
+    padding-left: 5px;
+}
+
+.vjs-rewind-button:before {
+    content: '<<';
+    /* Biểu tượng tua lùi */
+    font-size: 10px;
+    color: #ffffff;
+    text-shadow: 0 0 5px rgb(255, 255, 255);
+    /* Bóng sáng trắng cho ký tự */
+}
+
+.vjs-forward-button:before {
+    content: '>>';
+    /* Biểu tượng tua tới */
+    font-size: 10px;
+    color: #ffffff;
+    text-shadow: 0 0 5px rgb(255, 255, 255);
+    /* Bóng sáng trắng cho ký tự */
+}
+
+/* Định dạng cho các nút tua */
+.vjs-rewind-button,
+.vjs-forward-button {
+    background-color: rgba(0, 0, 0, 0.5);
+    /* Nền nửa trong suốt */
+    border: none;
+    /* Không có viền */
+    border-radius: 5px;
+    /* Bo góc */
+    padding: 5px;
+    /* Đệm cho nút */
+    cursor: pointer;
+    /* Chỉ báo con trỏ khi di chuột qua nút */
+}
+
+.vjs-speed-button {
+    background-color: rgba(0, 0, 0, 0.5);
+    /* Nền nửa trong suốt */
+    color: #ffffff;
+    /* Màu chữ */
+    border: none;
+    /* Không có viền */
+    border-radius: 5px;
+    /* Bo góc */
+    padding: 5px;
+    /* Đệm cho nút */
+    cursor: pointer;
+    /* Chỉ báo con trỏ khi di chuột qua nút */
+}
+
+.vjs-speed-button:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    /* Nền sáng khi di chuột qua */
+}
+
+#my-video {
+    width: 70vw;
+    /* Chiều rộng của video bằng 80% chiều rộng của viewport */
+    height: 35vw;
+    /* Chiều cao của video giữ tỷ lệ 16:9 */
+    max-width: 1280px;
+    /* Giới hạn chiều rộng tối đa */
+    max-height: 720px;
+    /* Giới hạn chiều cao tối đa */
+    margin: 0 auto;
+    /* Căn giữa video */
+    display: block;
+    /* Đảm bảo video là một khối */
+}

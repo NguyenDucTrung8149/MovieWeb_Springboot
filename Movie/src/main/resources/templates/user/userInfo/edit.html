@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <title>Home</title>
+    <th:block th:replace="layoutUser::link-css"></th:block>
+    <link rel="stylesheet" th:href="@{/css/updateinfo.css}" />
+</head>
+<body>
+<th:block th:replace="layoutUser::header"></th:block>
+
+<main>
+    <div class="container">
+        <div class="formbold-main">
+            <div class="formbold-form">
+                <form th:action="@{/taikhoan/edit}" th:object="${user}" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
+                    <input class="formbold-form-input" type="hidden" th:field="*{userName}" id="userName">
+                    <div class="flex flex-wrap formbold--mx-3">
+                        <div class="img-pro">
+                            <img th:if="${user.imageUrl == null}" src="/anh-mau-den-1.jpg" th:alt="${user.name}" class="rounded-circle" style="margin-left: 500px">
+                            <img th:if="${user.imageUrl != null}" th:src="${user.imageUrl}" th:alt="${user.name}" class="rounded-circle" style="margin-left: 500px">
+                        </div>
+                    </div>
+
+                    <div class="flex flex-wrap formbold--mx-3">
+                        <div class="w-full sm:w-half formbold-px-3">
+                            <div class="formbold-mb-5 w-full">
+                                <label th:if="${locale.getLanguage().equals('vi')}" for="name" class="formbold-form-label">Họ tên</label>
+                                <label th:if="${locale.getLanguage().equals('en')}" for="name" class="formbold-form-label">Full name</label>
+                                <input class="formbold-form-input" type="text" th:field="*{name}" id="name" required>
+                                <div class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}" ></div>
+                            </div>
+                        </div>
+                        <div class="w-full sm:w-half formbold-px-3">
+                            <div class="formbold-mb-5">
+                                <label th:if="${locale.getLanguage().equals('vi')}" for="name" class="formbold-form-label">Số điện thoại</label>
+                                <label th:if="${locale.getLanguage().equals('en')}" for="name" class="formbold-form-label">Phone number</label>
+                                <input class="formbold-form-input" type="number" th:field="*{phone}" id="phone">
+                                <div class="text-danger" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}" ></div>
+                            </div>
+                        </div>
+                        <div  class="w-full sm:w-half formbold-px-3">
+                            <div class="formbold-mb-5">
+                                <label for="email" class="formbold-form-label">Email</label>
+                                <input class="formbold-form-input" type="email" th:field="*{email}" id="email">
+                                <div class="text-danger" th:errors="*{email}" th:placeholder="emailgmail.com"></div>
+                            </div>
+                        </div>
+                        <div class="w-full sm:w-half formbold-px-3">
+                            <div class="formbold-mb-5">
+                                <label th:if="${locale.getLanguage().equals('vi')}" for="tuoi" class="formbold-form-label">Tuổi</label>
+                                <label th:if="${locale.getLanguage().equals('en')}" for="tuoi" class="formbold-form-label">Age</label>
+                                <input class="formbold-form-input" type="number" th:field="*{tuoi}" id="tuoi">
+                                <div class="text-danger" th:if="${#fields.hasErrors('tuoi')}" th:errors="*{tuoi}" ></div>
+                            </div>
+                        </div>
+                        <div class="w-full sm:w-half formbold-px-3">
+                            <div class="formbold-mb-5">
+                                <label  for="tuoi" class="formbold-form-label">Avatar</label>
+                                <input th:field="*{imageUrl}" class="formbold-form-input" type="file" accept="image/*" id="imageUrl" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-wrap formbold--mx-3">
+                        <div class="w-full sm:w-half formbold-px-3">
+                            <div class="formbold-mb-5 w-full">
+                                <label th:if="${locale.getLanguage().equals('vi')}"  for="oldPassword" class="formbold-form-label">Mật khẩu cũ</label>
+                                <label th:if="${locale.getLanguage().equals('en')}"  for="oldPassword" class="formbold-form-label">Old Password</label>
+                                <input class="formbold-form-input" type="password" th:field="*{oldPassword}" id="oldPassword">
+                                <div class="text-danger" th:if="${#fields.hasErrors('oldPassword')}" th:errors="*{oldPassword}"></div>
+                            </div>
+                        </div>
+                        <div class="w-full sm:w-half formbold-px-3">
+                            <div class="formbold-mb-5">
+                                <label th:if="${locale.getLanguage().equals('vi')}" for="password" class="formbold-form-label">Mật khẩu mới</label>
+                                <label th:if="${locale.getLanguage().equals('en')}" for="password" class="formbold-form-label">New password</label>
+                                <input class="formbold-form-input" type="password" th:field="*{password}" id="password">
+                            </div>
+                        </div>
+                        <div class="w-full sm:w-half formbold-px-3">
+                            <div class="formbold-mb-5">
+                                <label th:if="${locale.getLanguage().equals('vi')}"  for="confirmPassword" class="formbold-form-label">Xác nhận mật khẩu mới</label>
+                                <label th:if="${locale.getLanguage().equals('en')}"  for="confirmPassword" class="formbold-form-label">Confirm new password</label>
+                                <input class="formbold-form-input" type="password" th:field="*{confirmPassword}" id="confirmPassword">
+                                <div class="text-danger" th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <button  class="btn btn-primary" style="align-self: self-end;" th:text="#{submit}"></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+
+<th:block th:replace="layoutUser::footer"></th:block>
+
+</body>
+</html>

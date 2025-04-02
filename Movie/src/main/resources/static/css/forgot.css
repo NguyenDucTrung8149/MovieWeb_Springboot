@@ -1,0 +1,117 @@
+.main-container{
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    padding: 0;
+    overflow: hidden;
+}
+.main-container img {
+    width: 100vw; 
+    height: 100vh; 
+    object-fit: cover; 
+    position: absolute; 
+    top: 0;
+    left: 0;
+    z-index: -1; 
+    opacity: 0.8;
+}
+.box{
+    text-align: center;
+    align-items: center;
+    background: #2a2727;
+    width: auto;
+    height: auto;
+    padding: 25px;
+    position: absolute;
+    left: 50%; top:50%;
+    transform: translate(-50%,-50%);
+    box-shadow: 0 4px 8px rgba(242, 0, 0, 0.915);
+    font-family: var(--ff-poppins);
+    border-radius: 5px;
+}
+.box h1{
+    color: #fff;
+    font-family: 'Poppins', sans-serif;
+}
+.box input[type="email"],.box input[type="text"], .box input[type="number"]{
+    background: none;
+    outline: none;
+    color: #fff;
+    width: 500px;
+    height: 40px;
+    border-radius: 40px;
+    padding: 0 15px;
+    margin: 15px 0;
+    border: #e50914;
+    transition: 1s;
+}
+.box input[type="password"]:focus, .box input[type="email"]:focus,.box input[type="text"]:focus, .box input[type="number"]:focus{
+    width: 320px;
+    border-color: #e50914;
+    transition: 1s;
+}
+
+.btn-login {
+    color: #fff;
+    font-family: 'Poppins', sans-serif;
+    font-size: 13px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    align-items: center;
+    justify-self: end;
+    height: 50px;
+    width: 100px;
+    border: 2px solid hsl(0, 94%, 40%);
+    border-radius: 50px;
+    transition: 0.15s ease;
+  }
+  
+  .btn-login > ion-icon { font-size: 18px; }
+  
+  .btn-login { 
+    background: hsl(225, 25%, 9%);
+}
+  
+  .btn-login:is(:hover, :focus) {
+    background: hsl(0, 94%, 40%);
+    color: hsl(253, 21%, 13%);
+  }
+h4{
+    color: #ffffff8b;
+    font-size: 13px;
+    font-family: 'Poppins', sans-serif;
+}
+
+.fa{
+    font-size: 64px;
+    text-align: center;
+    text-decoration: none;
+}
+
+.form-for{
+    font-family: 'Poppins', sans-serif;
+    margin-top: 40px;
+    width: 100%;
+    display: flex;
+    flex: 1;
+}
+.sos{
+    display: flex;
+    flex: 1;
+    justify-content: center;
+}
+.sos span{
+  font-family: 'Poppins', sans-serif;
+  color: #c6cde1c1;
+  text-decoration: none;
+  margin-right: 10px;
+}
+.sos a{
+    font-family: 'Poppins', sans-serif;
+    color: #fff;
+    text-decoration: none;
+}
+.sos a:hover{
+    color: #e50914
+}

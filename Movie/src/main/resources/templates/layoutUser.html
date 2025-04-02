@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anime247</title>
+
+
+<!--    <link rel="shortcut icon" href="./favicon.svg" type="image/svg+xml">-->
+    <link th:fragment="link-css" rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link th:fragment="link-css" rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link th:fragment="link-css" rel="preconnect" href="https://fonts.googleapis.com">
+    <link th:fragment="link-css" rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link th:fragment="link-css" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link th:fragment="link-css" rel="stylesheet" th:href="@{/css/darklight.css}">
+    <link th:fragment="link-css" rel="stylesheet" th:href="@{/css/home.css}">
+</head>
+
+
+<body>
+<header th:fragment="header" class="header" data-header>
+    <div class="row">
+        <div class="navbar-container">
+
+            <div class="overlay" data-overlay></div>
+
+            <a href="/" class="logo">
+                <img src="/" alt="">
+            </a>
+
+
+            <div class="header-actions">
+                <form id="searchForm" class="langua" th:action="@{/phim/timkiem}"  method="GET">
+                    <div class="input-group">
+                        <label>
+                            <input class="input" type="text" name="thongtin" placeholder="Tìm..." />
+                        </label>
+                    </div>
+                </form>
+                <button class="search-btn" onclick="document.getElementById('searchForm').submit()">
+                    <ion-icon name="search-outline"></ion-icon>
+                </button>
+                <div class="lang-wrapper">
+                    <label for="language">
+                        <ion-icon name="globe-outline"></ion-icon>
+                    </label>
+
+                    <select name="language" id="language">
+                        <option value="vi">VIETNAMESE</option>
+                        <option value="en">ENGLISH</option>
+                    </select>
+                </div>
+                <button id="theme-toggle" class="btn btn-primary"><ion-icon class="bulb" name="bulb-outline"></ion-icon></button>
+
+
+                <a sec:authorize="!isAuthenticated()" href="/user/login"  class="langua btn btn-primary" style="white-space: nowrap;">
+                    <ion-icon name="log-in-outline"></ion-icon>
+                </a>
+                <div sec:authorize="isAuthenticated()" class="nav-item nav-icon">
+                    <a href="#" class="iq-user-dropdown search-toggle d-flex align-items-center p-0">
+                        <img th:if="${currentUserG.imageUrl != null}" th:src="${currentUserG.imageUrl}" class="img-fluid user-m rounded-circle" alt="" />
+                        <img th:if="${currentUserG.imageUrl == null}" src="/anh-mau-den-1.jpg" class="img-fluid user-m rounded-circle" alt="" />
+                    </a>
+                    <div class="iq-sub-dropdown iq-user-dropdown">
+                        <div class="iq-card shadow-none m-0">
+                            <div class="iq-card-body p-0 pl-3 pr-3">
+                                <a sec:authorize="hasAnyAuthority('ADMIN')" href="/admin/phim" class="iq-sub-card setting-dropdown">
+                                    <div class="media align-items-center">
+                                        <div class="media-body ml-3">
+                                            <h6 class="mb-0">Admin</h6>
+                                        </div>
+                                    </div>
+                                </a>
+
+                                <a href="/taikhoan" class="iq-sub-card setting-dropdown">
+                                    <div class="media align-items-center">
+
+                                        <div class="media-body ml-3">
+                                            <h6 class="mb-0">Tài khoản</h6>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a th:href="@{/membership/{userId}(userId=${currentUserG.id})}" class="iq-sub-card setting-dropdown">
+                                    <div class="media align-items-center">
+                                        <div class="media-body ml-3">
+                                            <h6 class="mb-0">Premium</h6>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a href="/thongbao" class="iq-sub-card setting-dropdown">
+                                    <div class="media align-items-center">
+                                        <div class="media-body ml-3">
+                                            <h6 class="mb-0">Thông báo</h6>
+                                        </div>
+                                    </div>
+                                </a>
+
+                                <a href="/user/logout" class="iq-sub-card setting-dropdown">
+                                    <div class="media align-items-center">
+                                        <div class="media-body ml-3">
+                                            <h6 class="mb-0">Đăng xuất</h6>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            </div>
+
+            <button class="menu-open-btn" data-menu-open-btn>
+                <ion-icon name="reorder-two"></ion-icon>
+            </button>
+
+            <div class="navbar-top">
+
+                <a href="/" class="logo">
+                    <img src="#" alt="">
+                </a>
+
+                <button class="menu-close-btn" data-menu-close-btn>
+                    <ion-icon name="close-outline"></ion-icon>
+                </button>
+            </div>
+        </div>
+
+    <div class="container" data-navbar>
+        <ul class="navbar-list">
+
+            <li>
+                <a href="/" class="navbar-link langua" th:text="#{home}"></a>
+            </li>
+            <li class="dropdown" >
+                <button class="dropbtn navbar-link" th:text="#{genre}"></button>
+                <div class="dropdown-content " >
+                    <div  th:each="genre, iterStat : ${genres}">
+                        <a class="langua" th:href="@{/phim/theloai/{genreId}(genreId=${genre.genreId})}"
+                           th:text="${localizedGenreNames[iterStat.index]}"></a>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <a  th:href="@{/phim/bo}" class="navbar-link langua" th:text="#{series}"></a>
+            </li>
+            <li>
+                <a  href="/phim/le" class="navbar-link langua" th:text="#{movies}"></a>
+            </li>
+
+            <li>
+                <a href="/phim/dangchieu" class="navbar-link langua" th:text="#{showing}"></a>
+            </li>
+
+            <li>
+                <a href="/phim/hoanthanh" class="navbar-link langua" th:text="#{completed}"></a>
+            </li>
+
+            <li>
+                <a href="/phim/lichchieu" class="navbar-link langua" th:text="#{schedule}"></a>
+            </li>
+
+            <li>
+                <a href="/phim/sapchieu" class="navbar-link langua" th:text="#{incoming}"></a>
+            </li>
+
+            <li>
+                <a href="/phim/top10" class="navbar-link langua">TOP10</a>
+            </li>
+
+        </ul>
+    </div>
+</header>
+
+
+<div th:insert="~{::${content}}">
+    <!-- NỘI DUNG TRANG CON--->
+</div>
+
+<footer th:fragment="footer" class="footer">
+    <div class="footer-top">
+        <div class="container">
+
+            <div class="footer-brand-wrapper">
+
+                <a href="/" class="logo">
+<!--                    <img src="#" alt="logo">-->
+                </a>
+
+                <ul class="footer-list">
+
+                    <li>
+                        <a href="/" class="footer-link langua" th:text="#{home}"></a>
+                    </li>
+
+                    <li>
+                        <a  th:href="@{/phim/bo}" class="navbar-link langua" th:text="#{series}"></a>
+                    </li>
+
+                    <li>
+                        <a href="/phim/le" class="footer-link langua" th:text="#{movies}"></a>
+                    </li>
+
+                    <li>
+                        <a href="/phim/dangchieu" class="footer-link langua" th:text="#{showing}"></a>
+                    </li>
+
+                    <li>
+                        <a href="/phim/lichchieu" class="footer-link langua" th:text="#{schedule}"></a>
+                    </li>
+
+                    <li>
+                        <a href="/phim/hoanthanh" class="footer-link langua" th:text="#{completed}"></a>
+                    </li>
+
+                    <li>
+                        <a href="/phim/sapchieu" class="footer-link langua" th:text="#{incoming}"></a>
+                    </li>
+
+                    <li>
+                        <a href="/phim/top10" class="footer-link langua">TOP10</a>
+                    </li>
+                </ul>
+
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="quicklink-wrapper">
+
+                <ul class="quicklink-list">
+
+                    <li>
+                        <a href="#" class="quicklink-link">Faq</a>
+                    </li>
+
+                    <li>
+                        <a href="#" class="quicklink-link">Help center</a>
+                    </li>
+
+                    <li>
+                        <a href="#" class="quicklink-link">Terms of use</a>
+                    </li>
+
+                    <li>
+                        <a href="#" class="quicklink-link">Privacy</a>
+                    </li>
+
+                </ul>
+
+                <ul class="social-list">
+
+                    <li>
+                        <a href="#" class="social-link">
+                            <ion-icon name="logo-facebook"></ion-icon>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#" class="social-link">
+                            <ion-icon name="logo-twitter"></ion-icon>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#" class="social-link">
+                            <ion-icon name="logo-pinterest"></ion-icon>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#" class="social-link">
+                            <ion-icon name="logo-linkedin"></ion-icon>
+                        </a>
+                    </li>
+
+                </ul>
+
+            </div>
+
+        </div>
+    </div>
+    <a href="#top" class="go-top" data-go-top>
+        <ion-icon name="chevron-up"></ion-icon>
+    </a>
+    <script th:src="@{/js/buttonup.js}"></script>
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <script>
+        // Thiết lập ngôn ngữ mặc định khi tải trang
+        window.addEventListener("load", function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const lang = urlParams.get("lang");
+
+            // Nếu `lang` tồn tại trong URL, đặt giá trị của select tương ứng
+            if (lang) {
+                document.getElementById("language").value = lang;
+            }
+        });
+
+        // Sự kiện khi thay đổi lựa chọn ngôn ngữ
+        document.getElementById("language").addEventListener("change", function () {
+            const selectedLanguage = this.value;
+
+            // Lấy toàn bộ URL hiện tại
+            const url = new URL(window.location.href);
+            const params = url.searchParams;
+
+            // Cập nhật hoặc thêm tham số `lang`
+            params.set("lang", selectedLanguage);
+
+            // Cập nhật lại URL với các tham số cũ
+            url.search = params.toString();
+
+            // Điều hướng đến URL mới
+            window.location.href = url.toString();
+        });
+    </script>
+</footer>
+</body>
+</html>

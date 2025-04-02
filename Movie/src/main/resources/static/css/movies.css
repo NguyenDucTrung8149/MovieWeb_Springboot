@@ -1,0 +1,19 @@
+.pagination-nav {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.pagination-nav a {
+    text-decoration: none;
+    padding: 5px 10px;
+    border: 1px solid #ee0e0ebf;
+    border-radius: 10px;
+    color: #ffffff;
+}
+
+.pagination-nav a.active {
+    background-color: #ee0e0ebf;
+    color: #ffffff;
+    border-color: #007bff;
+}

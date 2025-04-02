@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}" lang="">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <th:block th:replace="layoutUser::link-css"></th:block>
+    <link href="https://vjs.zencdn.net/7.15.4/video-js.css" rel="stylesheet" />
+    <link rel="stylesheet" th:href="@{/css/movies.css}">
+    <link rel="stylesheet" th:href="@{/css/video.css}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        .hass-scrollbar {
+            max-height: 300px; /* Chiều cao tối đa của nội dung */
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+        .hass-scrollbar::-webkit-scrollbar {
+            height: 8px;
+            width: 8px;
+        }
+
+        .hass-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+            box-shadow: 0 0 0 2px var(--citrine);
+            border-radius: 10px;
+        }
+        .hass-scrollbar::-webkit-scrollbar-thumb {
+            background: var(--gainsboro);
+            border-radius: 10px;
+            cursor: pointer;
+            box-shadow: inset 0 1px 0 var(--black),
+            inset 0 -1px 0 var(--black);
+        }
+        /* CSS để tạo kiểu cho cửa sổ popup */
+        #reportModal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            margin-top: 10px;
+            background-color: rgba(0, 0, 0, 0.6);
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from {opacity: 0;}
+            to {opacity: 1;}
+        }
+        #modalContent {
+            background-color: #151515;
+            margin: 10% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 70%;
+            max-width: 600px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            animation: slideIn 0.4s ease-in-out;
+        }
+        @keyframes slideIn {
+            from {transform: translateY(-100px);}
+            to {transform: translateY(0);}
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .close:hover,
+        .close:focus {
+            color: #000;
+            text-decoration: none;
+        }
+        .modal-header h2 {
+            margin-top: 0;
+        }
+        .modal-form label {
+            display: block;
+            margin-top: 10px;
+        }
+        body.light-mode .modal-header h2{
+            color: white;
+        }
+        body.light-mode .modal-header label{
+            color: gray;
+        }
+        .modal-form select,
+        .modal-form textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            background-color: white;
+        }
+        .modal-form button {
+            padding: 10px 20px;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+
+
+    </style>
+</head>
+<body>
+<th:block th:replace="layoutUser::header"></th:block>
+
+<main class="content" >
+    <div class="container" style="margin-top: 200px">
+        <section >
+            <a class="langua" th:href="@{/phim/chitiet/{movieId}(movieId=${movie.movieId})}">
+                <p class="newsv" th:if="${locate.getLanguage().equals('en')}" th:text="${movie.nameanother}+': Ep '+${episode.description}" style=" margin-bottom: 5%; cursor: pointer"></p>
+                <p class="newsv" th:if="${locate.getLanguage().equals('vi')}" th:text="${movie.name}+': Tập '+${episode.description}" style=" margin-bottom: 5%; cursor: pointer"></p>
+            </a>
+            <div style="margin-bottom: 3%">
+                <video id="my-video" class="video-js vjs-default-skin" controls preload="auto"
+                       th:poster="${movie.imageUrl}" th:data-movie-id="${movieId}"
+                       data-setup="{}">
+
+                    <source th:src="${episode.episodeLink}" type="application/x-mpegURL" />
+                    <p class="vjs-no-js">
+                        To view this video please enable JavaScript, and consider upgrading to a
+                        web browser that
+                        <a href="https://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
+                    </p>
+                </video>
+                <div style="margin-top: 10px;margin-left: 76%;display: flex;">
+                    <button class="btn btn-primary" id="reportBtn" style="margin-right: 30px;height: 10px"><ion-icon name="alert-circle-outline"></ion-icon></button>
+                    <!-- Cửa sổ popup -->
+                    <div id="reportModal">
+                        <div   id="modalContent">
+                            <div sec:authorize="isAuthenticated()">
+                                <span class="close">&times;</span>
+                                <div class="modal-header">
+                                    <h2 th:text="#{reportinput}"></h2>
+                                </div>
+                                <form id="reportForm" class="modal-form">
+                                    <label style="color: gray;" for="reportTitle" th:text="#{Title}"></label>
+                                    <select id="reportTitle" name="reportTitle" required>
+                                        <option value="Lỗi trang" th:text="#{pageerr}"></option>
+                                        <option value="Phản hồi" th:text="#{feedback}"></option>
+                                        <option value="Đề xuất cải tiến" th:text="#{sugg}"></option>
+                                        <option value="Khác" th:text="#{other}"></option>
+                                    </select>
+                                    <label style="color: gray;" for="reportDescription" th:text="#{description}"></label>
+                                    <textarea id="reportDescription" name="reportDescription" required></textarea><br>
+                                    <button class="btn btn-primary" style="height: 10px" type="submit"><ion-icon name="send-outline"></ion-icon></button>
+                                </form>
+                            </div>
+                           <div sec:authorize="!isAuthenticated()">
+                               <span class="close">&times;</span>
+                               <a href="/user/login">
+                                   <button class="btn btn-primary" style="height: 10px" >Login</button>
+                               </a>
+                           </div>
+                        </div>
+                    </div>
+                    <a class="langua" th:if="${nextEpId != null}"  th:href="@{/phim/xem/{movieId}/{epId}(movieId=${movieId},epId=${nextEpId})}">
+                        <button class="btn btn-primary" style="height: 10px">
+                            <ion-icon name="play-forward-outline"></ion-icon>
+                        </button>
+                    </a>
+                    <a class="langua" th:if="${nextEpId == null}"  th:href="@{/phim/xem/{movieId}/{epId}(movieId=${movieId},epId=${epId})}">
+                        <button class="btn btn-primary" style="height: 10px">
+                            <ion-icon name="play-forward-outline"></ion-icon>
+                        </button>
+                    </a>
+                </div>
+            </div>
+            <div class="row-detail container " style="margin-bottom: 0">
+                <div class="playlist" style="display: block;">
+                    <div class="movie-list" style="display: block;"><p class="newsv" th:text="#{episode}"></p>
+                        <div class="ep-list">
+                            <div class="col-p11" th:each="ep :${episodes}">
+                                <a th:if="${episode.id==ep.id}" class="langua" th:href="@{/phim/xem/{movieId}/{epId}(movieId=${ep.movie.movieId},epId=${ep.id})}">
+                                    <button class="btn btn-primary mb-2"  style="background-color: #ee0e0ebf;height: 10px" th:title="${ep.description}" th:text="${ep.description}"></button>
+                                </a>
+                                <a th:if="${episode.id!=ep.id}" class="langua" th:href="@{/phim/xem/{movieId}/{epId}(movieId=${ep.movie.movieId},epId=${ep.id})}">
+                                    <button class="btn btn-primary mb-2" style="height: 10px"  th:title="${ep.description}" th:text="${ep.description}"></button>
+                                </a>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section  style="margin-top: 30px;margin-bottom: 40px">
+            <p class="newsv" th:text="#{list}+' '+#{recommended} " ></p>
+            <div class="container"  >
+
+                <ul class="movies-list has-scrollbar" style="margin-top: 20px">
+
+                    <li th:each="moviesNew : ${recomendationList}">
+                        <div class="movie-card" >
+
+                            <a class="langua" th:href="@{/phim/chitiet/{movieId}(movieId=${moviesNew.movieId})}">
+                                <figure class="card-banner">
+                                    <img th:src="${moviesNew.imageUrl}" th:alt="${moviesNew.nameanother} + 'poster'">
+                                </figure>
+                            </a>
+
+                            <div class="title-wrapper">
+                                <a class="langua" th:href="@{/phim/chitiet/{movieId}(movieId=${moviesNew.movieId})}">
+                                    <h3 th:if="${locate.getLanguage().equals('vi')}" class="card-title" th:text="${moviesNew.name}"></h3>
+                                    <h3 th:if="${locate.getLanguage().equals('en')}" class="card-title" th:text="${moviesNew.nameanother}"></h3>
+
+                                </a>
+
+                                <time th:text="${moviesNew.timeupdate}"></time>
+                            </div>
+
+                            <div class="card-meta">
+                                <div th:if="${moviesNew.premium ==  true}" class="badge badge-outline">Pre</div>
+                                <div th:if="${moviesNew.premium ==  false}" class="badge badge-outline">Free</div>
+
+                                <div class="duration">
+                                    <ion-icon name="time-outline"></ion-icon>
+
+                                    <time datetime="PT137M" th:text="${moviesNew.duration}+' '+#{ep}"></time>
+                                </div>
+
+                                <div class="rating">
+                                    <ion-icon name="star"></ion-icon>
+
+                                    <data th:text="${moviesNew.average}" value=""></data>
+                                </div>
+                            </div>
+
+                        </div>
+                    </li>
+
+                </ul>
+
+            </div>
+        </section>
+        <section class="comment-section" style="margin-top: 15px" >
+            <div class="comment-container">
+                <h4 style="margin-left: 10px; margin-top: 5px" th:text="#{rate}"></h4>
+                <div class="hass-scrollbar">
+                    <div th:each="comment : ${comments}" class="comment-user row align-items-center">
+                        <div class="col-11">
+                            <div class="comment-user">
+                                <img th:if="${comment.user.imageUrl==null}" src="/css/anh-mau-den-1.jpg" alt="profile_image" />
+                                <img th:if="${comment.user.imageUrl!=null}" th:src="${comment.user.imageUrl}" alt="profile_image" />
+                            </div>
+                            <span class="text-primary bold" th:text="${comment.user.name}">UserName</span>
+                        </div>
+                        <div sec:authorize="isAuthenticated()" class="col-1 text-end" >
+                            <form class="d-inline" th:if="${comment.user.userName.contains(currentUser)}"
+                                  th:action="@{/comment/delete/{id}(id=${comment.id})}"
+                                  onclick="return confirm('Bạn có chắc chắn muốn xóa?')" method="post">
+                                <input type="hidden" name="episodeId" th:value="${episode.id}"/>
+                                <input type="hidden" name="movieId" th:value="${episode.movie.movieId}" />
+                                <button class="btn btn-danger btn-sm" style="height: 10px" type="submit"><ion-icon name="close-circle-outline"></ion-icon></button>
+                            </form>
+                        </div>
+
+                        <div class="comment-content ">
+                            <p th:text="${comment.content}"></p>
+                            <div class="stars">
+                                <p th:if="${comment.rating == 1}">
+                                    <a class="fa fa-star" style="color: #FD4"></a>
+                                    <a class="fa fa-star" style="color: #444"></a>
+                                    <a class="fa fa-star" style="color: #444"></a>
+                                    <a class="fa fa-star" style="color: #444"></a>
+                                    <a class="fa fa-star" style="color: #444"></a>
+                                </p>
+                                <p th:if="${comment.rating == 2}">
+                                    <a class="fa fa-star" style="color: #FD4"></a>
+                                    <a class="fa fa-star" style="color: #FD4"></a>
+                                    <a class="fa fa-star" style="color: #444"></a>
+                                    <a class="fa fa-star" style="color: #444"></a>
+                                    <a class="fa fa-star" style="color: #444"></a>
+                                </p>
+                                <p th:if="${comment.rating == 3}">
+                                    <a class="fa fa-star" style="color: #FD4"></a>
+                                    <a class="fa fa-star" style="color: #FD4"></a>
+                                    <a class="fa fa-star" style="color: #FD4"></a>
+                                    <a class="fa fa-star" style="color: #444"></a>
+                                    <a class="fa fa-star" style="color: #444"></a>
+                                </p>
+                                <p th:if="${comment.rating == 4}">
+                                    <a class="fa fa-star" style="color: #FD4"></a>
+                                    <a class="fa fa-star" style="color: #FD4"></a>
+                                    <a class="fa fa-star" style="color: #FD4"></a>
+                                    <a class="fa fa-star" style="color: #FD4"></a>
+                                    <a class="fa fa-star" style="color: #444"></a>
+                                </p>
+                                <p th:if="${comment.rating == 5}">
+                                    <a class="fa fa-star" style="color: #FD4"></a>
+                                    <a class="fa fa-star" style="color: #FD4"></a>
+                                    <a class="fa fa-star" style="color: #FD4"></a>
+                                    <a class="fa fa-star" style="color: #FD4"></a>
+                                    <a class="fa fa-star" style="color: #FD4"></a>
+                                </p>
+
+                            </div>
+                            <span th:text="${#dates.format(comment.timeStamp, 'dd-MM-yyyy')}">Ngày giờ</span>
+                            <hr>
+                        </div>
+                    </div>
+                </div>
+
+                </div>
+            <div sec:authorize="isAuthenticated()" class="comment-input">
+                <form class="comment-input-form" th:action="@{/comment/add}" method="post">
+                    <input type="hidden" name="episodeId" th:value="${episode.id}" />
+                    <input type="hidden" name="movieId" th:value="${episode.movie.movieId}" />
+                    <label>
+                        <input type="text" name="content" th:placeholder="#{ratetitle}" />
+                    </label>
+                    <div class="stars">
+                        <input class="star star-5" id="star-5" type="radio" name="star" th:value="5"/>
+                        <label class="star star-5" for="star-5"></label>
+                        <input class="star star-4" id="star-4" type="radio" name="star" th:value="4"/>
+                        <label class="star star-4" for="star-4"></label>
+                        <input class="star star-3" id="star-3" type="radio" name="star" th:value="3"/>
+                        <label class="star star-3" for="star-3"></label>
+                        <input class="star star-2" id="star-2" type="radio" name="star" th:value="2"/>
+                        <label class="star star-2" for="star-2"></label>
+                        <input class="star star-1" id="star-1" type="radio" name="star" th:value="1"/>
+                        <label class="star star-1" for="star-1"></label>
+                    </div>
+                    <button class="btn btn-primary" title="Submit" style="margin-bottom: 20px" th:text="#{submit}">
+                    </button>
+                </form>
+            </div>
+            <div sec:authorize="!isAuthenticated()" class="comment-input">
+                <a href="/user/login">
+                    <button class="btn btn-primary" title="Submit" style="margin-top:20px;margin-bottom: 20px;margin-left: 45%" th:text="#{login}"></button>
+                </a>
+            </div>
+        </section>
+    </div>
+</main>
+
+<script src="https://vjs.zencdn.net/7.15.4/video.js"></script>
+<script src="
+https://cdn.jsdelivr.net/npm/videojs-contrib-quality-levels@3.0.0/dist/videojs-contrib-quality-levels.min.js
+"></script>
+<script src="https://cdn.jsdelivr.net/npm/videojs-http-source-selector/dist/videojs-http-source-selector.min.js"></script>
+<script th:src="@{/js/video.js}"></script>
+<th:block th:replace="layoutUser::footer"></th:block>
+<script>
+    // JavaScript để điều khiển việc hiển thị cửa sổ popup
+    var modal = document.getElementById('reportModal');
+    var btn = document.getElementById('reportBtn');
+    var span = document.getElementsByClassName('close')[0];
+
+    btn.onclick = function() {
+        modal.style.display = 'block';
+    }
+
+    span.onclick = function() {
+        modal.style.display = 'none';
+    }
+
+    window.onclick = function(event) {
+        if (event.target === modal) {
+            modal.style.display = 'none';
+        }
+    }
+
+    // Xử lý khi form được gửi bằng AJAX
+    document.getElementById('reportForm').onsubmit = function(event) {
+        event.preventDefault();
+        var reportTitle = document.getElementById('reportTitle').value;
+        var reportDescription = document.getElementById('reportDescription').value;
+        var info = reportTitle + ": " + reportDescription;
+        var movieId = [[${movieId}]];
+        console.log("movieID: ",movieId);
+        $.ajax({
+            url: '/api/saveReport',
+            type: 'POST',
+            data: {
+                info: info,
+                movieId: movieId
+            },
+            success: function (response) {
+                alert('Báo cáo của bạn đã được gửi!');
+                modal.style.display = 'none';
+            },
+            error: function (error) {
+                alert('Có lỗi xảy ra. Vui lòng thử lại.');
+            }
+        });
+    }
+</script>
+</body>
+</html>

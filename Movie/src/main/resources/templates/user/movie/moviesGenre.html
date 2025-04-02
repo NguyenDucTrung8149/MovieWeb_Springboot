@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <th:block th:replace="layoutUser::link-css"></th:block>
+    <link th:fragment="link-css" rel="stylesheet" th:href="@{/css/movies.css}">
+</head>
+<body>
+<th:block th:replace="layoutUser::header"></th:block>
+
+<main class="content" style="margin-top: 80px">
+    <div class="container">
+        <section class="upcoming">
+            <div class="container">
+
+                <div class="flex-wrapper">
+
+                    <div class="title-wrapper">
+                        <h2 class="h2 section-title" th:text="#{list}+' '+ ${namePage}"></h2>
+                    </div>
+                </div>
+
+                <ul class="movies-list ">
+
+                    <li th:each="movie : ${movies}">
+                        <div class="movie-card">
+
+                            <a class="langua" th:href="@{/phim/chitiet/{movieId}(movieId=${movie.movieId})}">
+                                <figure class="card-banner">
+                                    <img th:src="${movie.imageUrl}" th:alt="${movie.nameanother} + 'poster'">
+                                </figure>
+                            </a>
+
+                            <div class="title-wrapper">
+                                <a class="langua" th:href="@{/phim/chitiet/{movieId}(movieId=${movie.movieId})}">
+                                    <h3 th:if="${locate.getLanguage().equals('vi')}" class="card-title" th:text="${movie.name}"></h3>
+                                    <h3 th:if="${locate.getLanguage().equals('en')}" class="card-title" th:text="${movie.nameanother}"></h3>
+                                </a>
+
+                                <time th:text="${movie.timeupdate}"></time>
+                            </div>
+
+                            <div class="card-meta">
+                                <div th:if="${movie.premium ==  true}" class="badge badge-outline">Pre</div>
+                                <div th:if="${movie.premium ==  false}" class="badge badge-outline">Free</div>
+
+                                <div class="duration">
+                                    <ion-icon name="time-outline"></ion-icon>
+
+                                    <time datetime="PT137M" th:text="${movie.duration}+' '+#{ep}"></time>
+                                </div>
+
+                                <div class="rating">
+                                    <ion-icon name="star"></ion-icon>
+
+                                    <data th:text="${movie.average}"></data>
+                                </div>
+                            </div>
+
+                        </div>
+                    </li>
+
+
+                </ul>
+
+            </div>
+        </section>
+
+        <div>
+            <nav class="pagination-nav">
+                <div th:if="${movies.hasPrevious()}">
+                    <a class="langua"
+                       th:href="@{/phim/theloai/{genreId}(genreId=${genreId},page=${movies.number - 1}, size=${movies.size})}">Previous</a>
+                </div>
+                <div th:each="i : ${#numbers.sequence(0, movies.totalPages - 1)}">
+                    <a class="langua"
+                       th:href="@{/phim/theloai/{genreId}(genreId=${genreId},page=${i}, size=${movies.size})}"
+                       th:text="${i + 1}"
+                       th:classappend="${i == movies.number} ? 'active' : ''">Page</a>
+                </div>
+                <div th:if="${movies.hasNext()}">
+                    <a class="langua"
+                       th:href="@{/phim/theloai/{genreId}(genreId=${genreId},page=${movies.number + 1}, size=${movies.size})}">Next</a>
+                </div>
+            </nav>
+        </div>
+    </div>
+</main>
+
+<th:block th:replace="layoutUser::footer"></th:block>
+</body>
+</html>
